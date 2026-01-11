@@ -70,17 +70,15 @@ class MainMenu extends Phaser.Scene{
                 fontSize: '36px',
                 fontFamily: 'Segoe UI',
                 fontStyle: 'bold',
-                color: '#ffffff',               // text color
-                backgroundColor: '#00874E',     // base button color
-                stroke: '#20D38B',              // border color
-                strokeThickness: 3,
+                color: '#ffffff',               
+                backgroundColor: '#00874E',     
                 padding: { left: 50, right: 50, top: 10, bottom: 10 },
                 shadow: {
                     offsetX: 0,
                     offsetY: 0,
-                    color: '#20D38B',          // glow color
-                    blur: 30,                  // makes the button “glow” around edges
-                    stroke: true,              // apply glow around the border
+                    color: '#20D38B',        
+                    blur: 30,                  
+                    stroke: true,              
                     fill: true
                 }
             }
@@ -112,26 +110,37 @@ class MainMenu extends Phaser.Scene{
             this.scale.height,
             'CREDITS',
             {
-                fontSize: '32px',                  // slightly bigger for emphasis
-                fontFamily: 'Segoe UI',            // modern clean font
+                fontSize: '32px',                  
+                fontFamily: 'Segoe UI',            
                 fontStyle: 'bold',
-                color: '#ffffff',                  // text color
-                backgroundColor: '#0E2A2A',       // dark base background
-                stroke: '#20D38B',                 // bright green border
-                strokeThickness: 3,
+                color: '#ffffff',                 
+                backgroundColor: '#0E2A2A',       
                 padding: { left: 30, right: 30, top: 10, bottom: 10 },
                 shadow: {
                     offsetX: 0,
                     offsetY: 0,
-                    color: '#20D38B',             // glow around the button
+                    color: '#20D38B',             
                     blur: 25,
-                    stroke: true,                 // glow along the button border
+                    stroke: true,                 
                     fill: true
                 }
             }
         ).setOrigin(0.5)
         this.credits.setInteractive({ useHandCursor: true })
-        .on('pointerdown',()=>this.credits.setScale(0.9))
+        .on('pointerdown',()=>{
+                this.credits.setScale(0.9);
+                const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
+                this.tweens.add({
+                    targets: fade,
+                    alpha: 1,
+                    duration: 100,
+                    onComplete: () => {
+                        this.scene.stop();
+                        this.scene.start('credits-scene');
+                    }
+                })
+            }
+        )
         .on('pointerup',()=>this.credits.setScale(1))
 
         this.tweens.add({

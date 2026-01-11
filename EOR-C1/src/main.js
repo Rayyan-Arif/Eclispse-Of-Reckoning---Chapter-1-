@@ -1,6 +1,7 @@
 import './style.css'
 import Phaser, { Physics } from 'phaser';
 import MainMenu from '../scenes/MainMenuScene';
+import Credits from '../scenes/CreditsScene';
 
 const config = {
   type: Phaser.WEBGL,
@@ -11,7 +12,7 @@ const config = {
       debug: true
     }
   },
-  scene: [MainMenu]
+  scene: [MainMenu,Credits]
 }
 
 const game = new Phaser.Game(config);
