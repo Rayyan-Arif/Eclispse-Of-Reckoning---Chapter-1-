@@ -1,0 +1,35 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --primary: #041F1C;
+  --secondary: #024B37;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body,html{
+  height: 100%;
+}
+
+body{
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#gameCanvas{
+  width: 70vw;
+  max-height: 600px;
+  min-height: 300px;
+  margin: 0 auto;
+  border: 1px solid black;
+}
+
+header,footer{
+  color: white;
+}
