@@ -45,8 +45,8 @@ class Credits extends Phaser.Scene{
         }
 
         this.title = this.add.text(
-            this.scale.width / 2,
-            this.scale.height,            
+            this.scale.width,
+            this.scale.height / 4,            
             'CREDITS',
             {
                 fontSize: '50px',
@@ -59,8 +59,8 @@ class Credits extends Phaser.Scene{
         ).setOrigin(0.5);
 
         this.devTitle = this.add.text(
-            this.scale.width / 2,
-            this.scale.height,
+            -this.scale.width,
+            this.scale.height / 2.5,
             'Developer',
             {
                 fontSize: '30px',
@@ -73,8 +73,8 @@ class Credits extends Phaser.Scene{
         ).setOrigin(0.5);
 
         this.devName = this.add.text(
-            this.scale.width / 2,
-            this.scale.height,
+            this.scale.width,
+            this.scale.height / 2.2,
             'Rayyan Arif',
             {
                 fontSize: '23px',
@@ -86,8 +86,8 @@ class Credits extends Phaser.Scene{
         ).setOrigin(0.5);
 
         this.thanks = this.add.text(
-            this.scale.width / 2,
-            this.scale.height,
+            -this.scale.width,
+            this.scale.height / 1.7,
             'Thank you for playing',
             {
                 fontSize: '27px',
@@ -99,8 +99,8 @@ class Credits extends Phaser.Scene{
         ).setOrigin(0.5);
 
         this.gameName = this.add.text(
-            this.scale.width / 2,
-            this.scale.height,
+            this.scale.width,
+            this.scale.height / 1.5,
             'Eclipse Of Reckoning',
             {
                 fontSize: '23px',
@@ -112,8 +112,8 @@ class Credits extends Phaser.Scene{
         ).setOrigin(0.5);
 
         this.back = this.add.text(
-            this.scale.width / 2,
-            this.scale.height,
+            -this.scale.width,
+            this.scale.height / 1.3,
             'BACK',
             {
                 fontSize: '23px',
@@ -148,11 +148,10 @@ class Credits extends Phaser.Scene{
         })
         .on('pointerup',()=>this.back.setScale(1));
 
-        const textHeights = [4,2.5,2.2,1.7,1.5,1.3];
         [this.title, this.devTitle, this.devName, this.thanks, this.gameName, this.back].forEach((el,i) => {
             this.tweens.add({
                 targets: el,
-                y: this.scale.height / textHeights[i],
+                x: this.scale.width / 2,
                 duration: 1000,
                 ease: 'Power2'  
             });
