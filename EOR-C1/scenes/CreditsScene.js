@@ -116,7 +116,7 @@ class Credits extends Phaser.Scene{
             this.scale.height / 1.3,
             'BACK',
             {
-                fontSize: '23px',
+                fontSize: '32px',
                 fontFamily: 'Segoe UI',
                 fontStyle: 'bold',
                 backgroundColor: '#0E2A2A',

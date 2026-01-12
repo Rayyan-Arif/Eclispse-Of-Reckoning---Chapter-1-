@@ -93,6 +93,7 @@ class MainMenu extends Phaser.Scene{
             duration: 1000,
             onComplete: () => {
                 this.scene.stop();
+                this.scene.start('story-narration-scene');
             }
           })
         })
