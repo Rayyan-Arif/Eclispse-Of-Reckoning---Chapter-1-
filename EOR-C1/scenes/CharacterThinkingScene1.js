@@ -4,14 +4,18 @@ class CharacterThinking1 extends Phaser.Scene{
     constructor(){
         super("character-thinking-1-scene");
         this.background;
-        this.dialogueText = `
-        I will not allow Purple Thorn to succeed.
-        I will defeat him and save the world.
-        I will become the RESISTIVE FORCE!!!
-        First I need to find him.
-        There must be his pets on the way.
-        They will try to stop me!
-        `;
+        this.dialogueText = [
+            "I will not allow\nPurple Thorn to succeed.",
+            "I will defeat him\nand save the world.",
+            "I will become the\n RESISTIVE FORCE!!!",
+            "First I need to find him.",
+            "There must be his\n pets on the way.",
+            "They will try to stop me!",
+        ];
+
+        this.index = 0;
+        this.counter = 0;
+        this.dialogue;
     }
 
     preload(){
@@ -26,6 +30,48 @@ class CharacterThinking1 extends Phaser.Scene{
             targets: this.background,
             alpha: 1,
             duration: 1000
+        });
+
+        this.dialogue = this.add.text(760,330,'',{
+            fontSize: '30px',
+            fontFamily: 'Arial',
+            color: 'black',
+            align: 'center',
+            lineSpacing: 30
+        }).setOrigin(0.5);
+
+        this.time.delayedCall(2000,() => {
+            const timer = this.time.addEvent({
+                delay: 70,
+                callback: () => {
+                    if(this.index >= this.dialogueText.length){
+                        this.time.delayedCall(1500, () => {
+                            const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
+                            this.tweens.add({
+                                targets: fade,
+                                alpha: 1,
+                                duration: 1000,
+                                onComplete: () => {
+                                    this.scene.stop();
+                                }
+                            });
+                        });
+                        timer.remove();
+                    } else{
+                        this.dialogue.setText(this.dialogueText[this.index].slice(0,this.counter++));
+                        if(this.counter > this.dialogueText[this.index].length){
+                            timer.paused = true;
+                            this.time.delayedCall(1000, () => {
+                                this.index++;
+                                this.counter = 0;
+                                timer.paused = false;
+                            });
+                        }
+                    }
+                },
+                callbackScope: this,
+                loop: true
+            })
         });
     }
 

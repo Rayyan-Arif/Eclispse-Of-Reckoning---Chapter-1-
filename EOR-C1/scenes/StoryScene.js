@@ -112,7 +112,7 @@ Can you stop the darkness before it consumes everything?`;
         });
 
         const timer = this.time.addEvent({
-            delay: 10,
+            delay: 70,
             callback: () => {
                 if(startStory){
                     this.story.setText(this.storyText.slice(0,this.counter++));
