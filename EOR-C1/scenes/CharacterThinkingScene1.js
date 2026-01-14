@@ -53,6 +53,7 @@ class CharacterThinking1 extends Phaser.Scene{
                                 duration: 1000,
                                 onComplete: () => {
                                     this.scene.stop();
+                                    this.scene.start('parkour-scene');
                                 }
                             });
                         });

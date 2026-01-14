@@ -4,6 +4,7 @@ import MainMenu from '../scenes/MainMenuScene';
 import Credits from '../scenes/CreditsScene';
 import Story from '../scenes/StoryScene';
 import CharacterThinking1 from '../scenes/CharacterThinkingScene1';
+import Parkour from '../scenes/ParkourScene';
 
 const config = {
   type: Phaser.WEBGL,
@@ -11,10 +12,10 @@ const config = {
   physics: {
     default: "arcade",
     arcade:{
-      debug: true
+      debug: false
     }
   },
-  scene: [MainMenu, Credits, Story, CharacterThinking1]
+  scene: [MainMenu, Credits, Story, CharacterThinking1, Parkour]
 }
 
 const game = new Phaser.Game(config);
