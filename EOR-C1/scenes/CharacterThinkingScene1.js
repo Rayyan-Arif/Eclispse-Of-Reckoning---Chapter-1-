@@ -9,7 +9,7 @@ class CharacterThinking1 extends Phaser.Scene{
             "I will defeat him\nand save the world.",
             "I will become the\n RESISTIVE FORCE!!!",
             "First I need to find him.",
-            "There must be his\n pets on the way.",
+            "There must be his\n traps on the way.",
             "They will try to stop me!",
         ];
 

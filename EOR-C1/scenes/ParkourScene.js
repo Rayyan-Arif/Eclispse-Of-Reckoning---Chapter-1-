@@ -13,6 +13,7 @@ class Parkour extends Phaser.Scene{
         this.player;
         this.playerSpeed = 200;
         this.buttonPressed = false;
+        this.slabMoving = false;
         this.slabButton;
         this.slabButtonBg;
         this.hint;
@@ -59,6 +60,7 @@ class Parkour extends Phaser.Scene{
                 alpha: 1,
                 duration: 100,
                 onComplete: () => {
+                    this.exitbutton.disableInteractive();
                     this.scene.stop();
                     this.scene.start('main-menu-scene');
                 }
@@ -141,7 +143,7 @@ class Parkour extends Phaser.Scene{
     }
 
     checkIfInAir(){
-        if(((this.player.x < 5) || (this.player.x >= 5 && this.player.x < 153)) && this.player.y >= 560 && this.player.y <= 565) return true;
+        if(((this.player.x < 5) || (this.player.x >= 5 && this.player.x < 153)) && this.player.y >= 555 && this.player.y <= 570) return true;
         else if(((this.player.x > this.scale.width - 5) ||  (this.player.x >= 875 && this.player.x < this.scale.width)) && this.player.y >= 560 && this.player.y <= 565) return true;
         else if(this.player.x >= 170 && this.player.x < 360 && this.player.y >= 497 && this.player.y <= 502) return true;
         else if(this.player.x >= 390 && this.player.x < 580 && this.player.y >= 425 && this.player.y <= 432) return true;
@@ -155,19 +157,16 @@ class Parkour extends Phaser.Scene{
     }
 
     moveSlab(){
-        if(this.player.x >= 610 && this.player.x < 810 && this.player.y >= 377 && this.player.y <= 382 && !this.buttonPressed){
+        if(!this.slabMoving && this.player.x >= 610 && this.player.x < 810 && this.player.y >= 377 && this.player.y <= 382 && !this.buttonPressed){
+            this.slabMoving = true;
             this.tweens.add({
                 targets: this.slab3,
                 duration: 200,
                 x: 840,
                 ease: 'linear',
+                yoyo: true,
                 onComplete: () => {
-                    this.tweens.add({
-                        targets: this.slab3,
-                        duration: 200,
-                        x: 640,
-                        ease: 'linear'
-                    });
+                    this.slabMoving = false;
                 }
             });
         }
@@ -182,7 +181,7 @@ class Parkour extends Phaser.Scene{
                 duration: 100,
                 onComplete: () => {
                     this.scene.stop();
-                    this.scene.start();
+                    this.scene.start("escape-arrows-scene");
                 }
             })
         }
