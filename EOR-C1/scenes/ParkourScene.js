@@ -35,7 +35,7 @@ class Parkour extends Phaser.Scene{
             color: 'black'
         }).setOrigin(0.5);
 
-        this.exitbutton = this.add.text(90,40,'EXIT',{
+        this.exitButton = this.add.text(90,40,'EXIT',{
             fontSize: '32px',
             fontFamily: 'Segoe UI',
             fontStyle: 'bold',
@@ -51,25 +51,25 @@ class Parkour extends Phaser.Scene{
                 fill: true
             }
         }).setOrigin(0.5).setAlpha(0);
-        this.exitbutton.setInteractive({ useHandCursor: true })
+        this.exitButton.setInteractive({ useHandCursor: true })
         .on('pointerdown',() => {
-            this.exitbutton.setScale(0.9);
+            this.exitButton.setScale(0.9);
             const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
             this.tweens.add({
                 targets: fade,
                 alpha: 1,
                 duration: 100,
                 onComplete: () => {
-                    this.exitbutton.disableInteractive();
+                    this.exitButton.disableInteractive();
                     this.scene.stop();
                     this.scene.start('main-menu-scene');
                 }
             })
         })
-        .on('pointerup',() => this.exitbutton.setScale(1));
+        .on('pointerup',() => this.exitButton.setScale(1));
 
         this.tweens.add({
-            targets: this.exitbutton,
+            targets: this.exitButton,
             alpha: 1,
             duration: 100,
             ease: 'linear'
@@ -157,7 +157,7 @@ class Parkour extends Phaser.Scene{
     }
 
     moveSlab(){
-        if(!this.slabMoving && this.player.x >= 610 && this.player.x < 810 && this.player.y >= 377 && this.player.y <= 382 && !this.buttonPressed){
+        if(!this.slabMoving && this.player.x >= 600 && this.player.x < 810 && this.player.y >= 377 && this.player.y <= 382 && !this.buttonPressed){
             this.slabMoving = true;
             this.tweens.add({
                 targets: this.slab3,
@@ -183,7 +183,7 @@ class Parkour extends Phaser.Scene{
                     this.scene.stop();
                     this.scene.start("escape-arrows-scene");
                 }
-            })
+            });
         }
     }
 }
