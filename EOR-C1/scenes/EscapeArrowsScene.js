@@ -17,8 +17,6 @@ class EscapeArrows extends Phaser.Scene{
 
     preload(){
         this.load.image('arrows-bg','../UI Images/arrows-bg.png');
-        this.load.image('player-left','../UI Images/main-character-left.png');
-        this.load.image('player-right','../UI Images/main-character-right.png');
         this.load.image('arrow','../UI Images/arrow.png');
     }
 
@@ -31,7 +29,6 @@ class EscapeArrows extends Phaser.Scene{
     
         this.player = this.physics.add.image(this.w/15, this.h/1.11, 'player-right').setOrigin(0.5).setAlpha(0);
         this.player.setScale(1.7);
-        this.player.body.setSize(this.player.width, this.player.height);
         this.player.body.updateFromGameObject();
         this.player.body.setSize(this.player.displayWidth*0.14, this.player.displayHeight*0.55);
         this.player.body.setOffset(this.player.displayWidth/4.6, this.player.displayHeight/7.2);
@@ -139,7 +136,7 @@ class EscapeArrows extends Phaser.Scene{
                 duration: 100,
                 onComplete: () => {
                     this.scene.stop();
-                    this.scene.start("");
+                    this.scene.start("escape-knight-scene");
                 }
             })
         }
