@@ -135,6 +135,7 @@ class Credits extends Phaser.Scene{
         this.back.setInteractive({ useHandCursor: true })
         .on('pointerdown',()=>{
             this.back.setScale(0.9);
+            this.sound.play('button-click');
             const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
             this.tweens.add({
                 targets: fade,

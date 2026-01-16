@@ -7,6 +7,7 @@ import CharacterThinking1 from '../scenes/CharacterThinkingScene1';
 import Parkour from '../scenes/ParkourScene';
 import EscapeArrows from '../scenes/EscapeArrowsScene';
 import EscapeKnight from '../scenes/EscapeKnightScene';
+import Maze from '../scenes/MazeScene';
 
 const config = {
   type: Phaser.WEBGL,
@@ -15,11 +16,11 @@ const config = {
   physics: {
     default: "arcade",
     arcade:{
-      debug: true,
+      debug: false,
     }
   },
-  // scene: [MainMenu, Credits, Story, CharacterThinking1, Parkour, EscapeArrows, EscapeKnight]
-  scene: [EscapeKnight]
+  // scene: [MainMenu, Credits, Story, CharacterThinking1, Parkour, EscapeArrows, EscapeKnight, Maze]
+  scene: [Maze]
 }
 
 const game = new Phaser.Game(config);

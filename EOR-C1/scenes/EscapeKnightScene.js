@@ -37,7 +37,7 @@ class EscapeKnight extends Phaser.Scene{
         this.background = this.add.image(0,0,'arrows-bg').setOrigin(0,0).setAlpha(0);
         this.background.setDisplaySize(this.w, this.h);
 
-        this.player = this.physics.add.image(this.w/15, this.h/1.11, 'player-right').setOrigin(0.5).setAlpha(0);
+        this.player = this.physics.add.image(this.w/17, this.h/1.11, 'player-right').setOrigin(0.5).setAlpha(0);
         this.player.setScale(1.7);
         this.player.body.updateFromGameObject();
         this.player.body.setSize(this.player.displayWidth*0.14, this.player.displayHeight*0.55);
@@ -220,7 +220,7 @@ moment as you have no weapon.
                             this.timerNotRegistered = true;
                             this.knightAttackPlayer = false;
                             this.player.setTexture('player-right');
-                            this.player.x = this.w / 15;
+                            this.player.x = this.w / 17;
                             this.player.y = this.h / 1.11;
                             this.input.keyboard.enabled = true;
                             this.input.keyboard.resetKeys();
@@ -242,7 +242,7 @@ moment as you have no weapon.
                 duration: 100,
                 onComplete: () => {
                     this.scene.stop();
-                    this.scene.start("");
+                    this.scene.start("maze-scene");
                 }
             })
         }

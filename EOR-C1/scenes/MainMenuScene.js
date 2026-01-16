@@ -19,6 +19,7 @@ class MainMenu extends Phaser.Scene{
         this.load.image("enemy","../UI Images/angryenemy.png");
         this.load.image("knight","../UI Images/guard-alert.png");
         this.load.image('particle', '../UI Images/particle.png');
+        this.load.audio('button-click','../Audios/button-click.mp3');
     }
 
     create(){
@@ -86,6 +87,7 @@ class MainMenu extends Phaser.Scene{
         this.play.setInteractive({ useHandCursor: true })
         .on('pointerdown',()=>{
           this.play.setScale(0.9);
+          this.sound.play('button-click');
           const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
           this.tweens.add({
             targets: fade,
@@ -130,6 +132,7 @@ class MainMenu extends Phaser.Scene{
         this.credits.setInteractive({ useHandCursor: true })
         .on('pointerdown',()=>{
                 this.credits.setScale(0.9);
+                this.sound.play('button-click');
                 const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
                 this.tweens.add({
                     targets: fade,
