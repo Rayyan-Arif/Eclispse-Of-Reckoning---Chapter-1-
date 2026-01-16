@@ -23,12 +23,6 @@ class EscapeKnight extends Phaser.Scene{
     }
 
     preload(){
-        //temporary loading for testing.....
-        this.load.image('arrows-bg','../UI Images/arrows-bg.png');
-        this.load.image('player-left','../UI Images/main-character-left.png');
-        this.load.image('player-right','../UI Images/main-character-right.png');
-
-        //actual loading needed
         this.load.image('wall','../UI Images/wall.png');
         this.load.image('knight-alert','../UI Images/guard-alert.png');
         this.load.image('knight-sleeping','../UI Images/guard-sleeping.png');
