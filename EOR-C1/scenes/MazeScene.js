@@ -94,7 +94,7 @@ class Maze extends Phaser.Scene{
         );
 
         this.exitbutton = this.add.text(Helper.scaleWidth(930,this.w),Helper.scaleHeight(40,this.h),'EXIT',{
-            fontSize: '32px',
+            fontSize: `${Helper.scaleWidth(32, this.w)}px`,
             fontFamily: 'Segoe UI',
             fontStyle: 'bold',
             backgroundColor: '#0E2A2A',
@@ -200,7 +200,7 @@ class Maze extends Phaser.Scene{
             duration: 300,
             onComplete: () => {
                 this.scene.stop();
-                this.scene.start("battlefield-scene");
+                this.scene.start("battle-scene");
             }
         })
     }

@@ -145,7 +145,7 @@ class MainMenu extends Phaser.Scene{
                 })
             }
         )
-        .on('pointerup',()=>this.credits.setScale(1))
+        .on('pointerup',()=>this.credits.setScale(1));
 
         this.tweens.add({
             targets: this.credits,
