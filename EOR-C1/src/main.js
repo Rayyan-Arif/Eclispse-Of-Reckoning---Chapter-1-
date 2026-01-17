@@ -10,6 +10,7 @@ import EscapeKnight from '../scenes/EscapeKnightScene';
 import Maze from '../scenes/MazeScene';
 import Battle from '../scenes/BattleScene';
 import Ending from '../scenes/EndingScene';
+import CharacterThinking2 from '../scenes/CharacterThinkingScene2';
 
 const config = {
   type: Phaser.WEBGL,
@@ -21,8 +22,8 @@ const config = {
       debug: true,
     }
   },
-  // scene: [MainMenu, Credits, Story, CharacterThinking1, Parkour, EscapeArrows, EscapeKnight, Maze, Battle, Ending]
-  scene: [Ending]
+  // scene: [MainMenu, Credits, Story, CharacterThinking1, Parkour, EscapeArrows, EscapeKnight, Maze, Battle, CharacterThinkingScene2, Ending]
+  scene: [Battle]
 }
 
 const game = new Phaser.Game(config);
