@@ -29,12 +29,12 @@ class Maze extends Phaser.Scene{
             [1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,0,1,1,1,1,1],
             [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1],
+            [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1],
             [1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1],
+            [1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
+            [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1],
             [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1],
         ];
@@ -44,6 +44,8 @@ class Maze extends Phaser.Scene{
         this.playerSpeed = 300;
         this.exitbutton;
         this.sword;
+        this.hint;
+        this.arrow;
     }
 
     preload(){
@@ -76,8 +78,12 @@ class Maze extends Phaser.Scene{
             }
         }
 
-        this.player = this.physics.add.image(this.w/1.1, this.h/2, 'player-right').setOrigin(0.5).setAlpha(0);
+        this.player = this.physics.add.image(this.w/20, this.h/2, 'player-right').setOrigin(0.5).setAlpha(0);
         this.player.setScale(0.4);
+        this.player.setDepth(2);
+        this.player.setPostPipeline('GlowFX');
+        this.player.postFX.addGlow(0xffff00, 4, 0, false, 0.1);
+
         this.player.body.setSize(
             this.player.displayWidth/3, this.player.displayHeight/1.6
         );
@@ -125,8 +131,35 @@ class Maze extends Phaser.Scene{
         this.physics.add.existing(this.sword, true);
         this.sword.body.setSize(this.sword.displayWidth/10, this.sword.displayHeight/1.1);
 
+        this.hint = this.add.text(
+            this.w/1.1,
+            Helper.scaleHeight(500, this.h),
+            'Complete\nthe\nmaze\nand\ntake\nthe\nsword!',
+            {
+                fontSize: `${Helper.scaleWidth(30,this.w)}px`,
+                fontFamily: 'Arial',
+                color: 'black',
+                fontStyle: 'bold',
+                align: 'center'
+            }
+        ).setOrigin(0.5).setAlpha(0);
+
+        this.arrow = this.add.text(
+            Helper.scaleWidth(50, this.w),
+            Helper.scaleHeight(300, this.h),
+            '↓',
+            {
+                fontSize: `${Helper.scaleWidth(60,this.w)}px`,
+                color: 'black',
+                fontFamily: 'Arial',
+                fontStyle: 'bold',
+                align: 'center',
+                lineSpacing: 0
+            }
+        ).setOrigin(0.5).setAlpha(0);
+
         this.tweens.add({
-            targets: [this.background, ...this.mazeTiles, this.player, this.exitbutton, this.sword],
+            targets: [this.background, ...this.mazeTiles, this.player, this.exitbutton, this.sword, this.hint, this.arrow],
             duration: 100,
             alpha: 1
         });
@@ -160,7 +193,7 @@ class Maze extends Phaser.Scene{
     }
 
     exitScene(){
-        const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
+        const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0).setDepth(3);
         this.tweens.add({
             targets: fade,
             alpha: 1,
