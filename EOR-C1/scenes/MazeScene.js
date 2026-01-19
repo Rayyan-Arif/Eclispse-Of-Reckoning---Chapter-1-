@@ -49,11 +49,6 @@ class Maze extends Phaser.Scene{
     }
 
     preload(){
-        //temporary loading
-        this.load.image('player-left','../UI Images/main-character-left.png');
-        this.load.image('player-right','../UI Images/main-character-right.png');
-
-        //actual loading
         this.load.image('sword','../UI Images/sword.png');
     }
 

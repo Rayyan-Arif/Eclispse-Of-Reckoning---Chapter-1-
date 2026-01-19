@@ -22,8 +22,8 @@ const config = {
       debug: true,
     }
   },
-  // scene: [MainMenu, Credits, Story, CharacterThinking1, Parkour, EscapeArrows, EscapeKnight, Maze, Battle, CharacterThinkingScene2, Ending]
-  scene: [Battle]
+  scene: [MainMenu, Credits, Story, CharacterThinking1, Parkour, EscapeArrows, EscapeKnight, Maze, Battle, CharacterThinking2, Ending]
+  // scene: [Battle]
 }
 
 const game = new Phaser.Game(config);
