@@ -43,13 +43,13 @@ class Maze extends Phaser.Scene{
         this.player;
         this.playerSpeed = 300;
         this.exitbutton;
-        this.sword;
+        this.gun;
         this.hint;
         this.arrow;
     }
 
     preload(){
-        this.load.image('sword','../UI Images/sword.png');
+        this.load.image('gun','../UI Images/gun.png');
     }
 
     create(){
@@ -121,15 +121,15 @@ class Maze extends Phaser.Scene{
         })
         .on('pointerup',() => this.exitbutton.setScale(1));
 
-        this.sword = this.add.image(Helper.scaleWidth(920, this.w),Helper.scaleHeight(200,this.h),'sword').setOrigin(0.5).setAlpha(0);
-        this.sword.setScale(0.5);  
-        this.physics.add.existing(this.sword, true);
-        this.sword.body.setSize(this.sword.displayWidth/10, this.sword.displayHeight/1.1);
+        this.gun = this.add.image(Helper.scaleWidth(930, this.w),Helper.scaleHeight(200,this.h),'gun').setOrigin(0.5).setAlpha(0);
+        this.gun.setScale(0.2);  
+        this.physics.add.existing(this.gun, true);
+        this.gun.body.setSize(this.gun.displayWidth/1.1, this.gun.displayHeight/1.2);
 
         this.hint = this.add.text(
             this.w/1.1,
             Helper.scaleHeight(500, this.h),
-            'Complete\nthe\nmaze\nand\ntake\nthe\nsword!',
+            'Complete\nthe\nmaze\nand\ntake\nthe\ngun!',
             {
                 fontSize: `${Helper.scaleWidth(30,this.w)}px`,
                 fontFamily: 'Arial',
@@ -154,7 +154,7 @@ class Maze extends Phaser.Scene{
         ).setOrigin(0.5).setAlpha(0);
 
         this.tweens.add({
-            targets: [this.background, ...this.mazeTiles, this.player, this.exitbutton, this.sword, this.hint, this.arrow],
+            targets: [this.background, ...this.mazeTiles, this.player, this.exitbutton, this.gun, this.hint, this.arrow],
             duration: 100,
             alpha: 1
         });
@@ -163,7 +163,7 @@ class Maze extends Phaser.Scene{
             this.physics.add.collider(this.player, this.mazeTiles[i]);
         }
 
-        this.physics.add.collider(this.player, this.sword, () => {this.exitScene()});
+        this.physics.add.collider(this.player, this.gun, () => {this.exitScene()});
 
         this.player.setCollideWorldBounds(true);
 
