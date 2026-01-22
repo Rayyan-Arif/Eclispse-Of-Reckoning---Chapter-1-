@@ -23,6 +23,10 @@ class Parkour extends Phaser.Scene{
         this.load.image('parkour','../UI Images/parkour.png');
         this.load.image('player-left','../UI Images/main-character-left.png');
         this.load.image('player-right','../UI Images/main-character-right.png');
+
+        this.load.audio('jump','../Audios/jump.wav');
+        this.load.audio('enable-parkour-button','../Audios/enable-parkour-button.wav');
+        this.load.audio('death','../Audios/death.wav');
     }
     
     create(){
@@ -54,6 +58,9 @@ class Parkour extends Phaser.Scene{
         this.exitButton.setInteractive({ useHandCursor: true })
         .on('pointerdown',() => {
             this.exitButton.setScale(0.9);
+            this.exitButton.disableInteractive();
+            this.sound.play('button-click');
+
             const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
             this.tweens.add({
                 targets: fade,
@@ -88,6 +95,7 @@ class Parkour extends Phaser.Scene{
         this.slabButton = this.add.circle(this.scale.width/2.1, this.scale.height/2.4, 20, 0xff0000).setOrigin(0.5);
         this.slabButton.setInteractive({ useHandCursor: true })
         .on('pointerdown',() => {
+            this.sound.play('enable-parkour-button');
             this.slabButton.setScale(0.8);
             this.buttonPressed = true;
             this.slabButton.disableInteractive();
@@ -126,6 +134,7 @@ class Parkour extends Phaser.Scene{
             this.player.setVelocityX(this.playerSpeed*1.5);
         }
         if(Phaser.Input.Keyboard.JustDown(up) && this.checkIfInAir()){
+            this.sound.play('jump');
             this.moveUp();
         }
 
@@ -152,7 +161,10 @@ class Parkour extends Phaser.Scene{
     }
 
     checkIfInLava(){
-        if(this.player.x >= 153 && this.player.x < 875 && this.player.y >= 620) return true;
+        if(this.player.x >= 153 && this.player.x < 875 && this.player.y >= 620){
+            this.sound.play('death');
+            return true;
+        }
         else return false;
     }
 

@@ -45,6 +45,8 @@ Can you stop the darkness before it consumes everything?`;
         this.exitbutton.setInteractive({ useHandCursor: true })
         .on('pointerdown',() => {
             this.exitbutton.setScale(0.9);
+            this.exitbutton.disableInteractive();
+            this.sound.play('button-click');
             const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
             this.tweens.add({
                 targets: fade,
@@ -77,6 +79,8 @@ Can you stop the darkness before it consumes everything?`;
         this.skipbutton.setInteractive({ useHandCursor: true })
         .on('pointerdown',() => {
             this.skipbutton.setScale(0.9);
+            this.skipbutton.disableInteractive();
+            this.sound.play('button-click');
             const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
             this.tweens.add({
                 targets: fade,

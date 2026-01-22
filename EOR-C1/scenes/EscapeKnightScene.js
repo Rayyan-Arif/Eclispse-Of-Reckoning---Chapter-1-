@@ -20,12 +20,15 @@ class EscapeKnight extends Phaser.Scene{
         this.hint;
         this.diedText;
         this.alert;
+        this.alertSound;
     }
 
     preload(){
         this.load.image('wall','../UI Images/wall.png');
         this.load.image('knight-alert','../UI Images/guard-alert.png');
         this.load.image('knight-sleeping','../UI Images/guard-sleeping.png');
+
+        this.load.audio('alert','../Audios/alert.wav');
     }
 
     create(){
@@ -64,6 +67,8 @@ class EscapeKnight extends Phaser.Scene{
         .on('pointerdown',() => {
             this.exitbutton.setScale(0.9);
             this.exitbutton.disableInteractive();
+            this.sound.play('button-click');
+
             const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
             this.tweens.add({
                 targets: fade,
@@ -128,6 +133,8 @@ moment as you have no weapon.
         });
 
         this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.alertSound = this.sound.add('alert');
     }
 
     update(){
@@ -155,14 +162,19 @@ moment as you have no weapon.
     wakeUpKnight(){
         if(this.knightSleeping && this.timerNotRegistered && !this.knightAttackPlayer){
             this.timerNotRegistered = false;
+
             const time = Math.floor(Math.random() * (1501)) + 1500;
             this.time.delayedCall(time, () => {
+
                 this.knightSleeping = false;
                 this.knight.setTexture('knight-alert');
                 this.knight.x = Helper.scaleWidth(900, this.w);
                 this.knight.y = Helper.scaleHeight(285, this.h);
                 this.alert.setAlpha(1);
+                this.alertSound.play();
+
                 this.sleepTimer = this.time.delayedCall(3000, () => {
+                    this.alertSound.stop();
                     this.knightSleeping = true;
                     this.timerNotRegistered = true;
                     this.knight.setTexture('knight-sleeping');
@@ -205,6 +217,8 @@ moment as you have no weapon.
                         yoyo: true,
                         repeat: -1
                     });
+
+                    this.sound.play('death');
 
                     this.tweens.add({
                         targets: this.player,

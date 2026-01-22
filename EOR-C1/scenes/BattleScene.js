@@ -35,6 +35,11 @@ class Battle extends Phaser.Scene{
         this.load.image('enemy-left','../UI Images/battlefield-enemy-left.png');
         this.load.image('enemy-right','../UI Images/battlefield-enemy-right.png');
         this.load.image('bullet','../UI Images/bullet.png');
+
+        this.load.audio('button-click','../Audios/button-click.wav');
+        this.load.audio('shoot','../Audios/shoot.wav');
+        this.load.audio('damage','../Audios/damage.wav');
+        this.load.audio('win','../Audios/win.wav');
     }
 
     create(){
@@ -67,6 +72,8 @@ class Battle extends Phaser.Scene{
         .on('pointerdown',() => {
             this.exitbutton.setScale(0.9);
             this.exitbutton.disableInteractive();
+            this.sound.play('button-click');
+
             const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
             this.tweens.add({
                 targets: fade,
@@ -113,6 +120,7 @@ class Battle extends Phaser.Scene{
         .on('pointerdown',() => {
             this.startbutton.setScale(0.9);
             this.startbutton.disableInteractive();
+            this.sound.play('button-click');
 
             this.input.setDefaultCursor('default');
             this.time.delayedCall(0, () => {this.fightStarted = true});
@@ -200,6 +208,8 @@ class Battle extends Phaser.Scene{
                 });
             }
         }
+
+        this.bulletSound = this.sound.add('shoot');
     }
 
     update(){
@@ -303,6 +313,8 @@ class Battle extends Phaser.Scene{
 
     fireBullet(px,py){
         if(this.fightStarted && !this.isReloading){
+            this.bulletSound.play();
+
             this.isReloading = true;
             this.bullet.x = this.player.x;
             this.bullet.y = this.player.y;
@@ -337,6 +349,7 @@ class Battle extends Phaser.Scene{
             if(!this.isDamaged){
                 this.healthbar.scaleX -= 0.125;
                 this.isDamaged = true;
+                this.sound.play('damage');
                 this.time.delayedCall(3000, () => {this.isDamaged = false});
             }
         } else {
@@ -354,6 +367,9 @@ class Battle extends Phaser.Scene{
     exitScene(){
         if(this.timerCount.getRemaining() === 0){
             this.timeEnded = true;
+
+            this.sound.play('win');
+
             for(let i=0 ; i<5 ; i++) this.generatePositionEnemy(this.enemies[i]);
 
             const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0).setDepth(4);
@@ -381,6 +397,8 @@ class Battle extends Phaser.Scene{
         this.canMove = false;
 
         this.healthText.setText('You Died!');
+
+        this.sound.play('death');
 
         for(let i=0 ; i<5 ; i++){
             this.enemies[i].setVelocity(0);

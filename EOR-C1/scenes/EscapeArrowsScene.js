@@ -13,16 +13,21 @@ class EscapeArrows extends Phaser.Scene{
         this.arrows = [];
         this.hint;
         this.exitbutton;
+        this.arrowSound;
     }
 
     preload(){
         this.load.image('arrows-bg','../UI Images/arrows-bg.png');
         this.load.image('arrow','../UI Images/arrow.png');
+
+        this.load.audio('arrow-shoot','../Audios/arrow-shoot.wav');
     }
 
     create(){
         this.w = this.scale.width;
         this.h = this.scale.height;
+
+        this.arrowSound = this.sound.add('arrow-shoot');
   
         this.background = this.add.image(0,0,'arrows-bg').setOrigin(0,0).setAlpha(0);
         this.background.setDisplaySize(this.w, this.h);
@@ -71,6 +76,8 @@ class EscapeArrows extends Phaser.Scene{
         .on('pointerdown',() => {
             this.exitbutton.setScale(0.9);
             this.exitbutton.disableInteractive();
+            this.sound.play('button-click');
+
             const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
             this.tweens.add({
                 targets: fade,
@@ -97,7 +104,10 @@ class EscapeArrows extends Phaser.Scene{
                 targets: arrow,
                 duration: 550,
                 y: this.scale.height + 100,
-                repeat: -1
+                repeat: -1,
+                onRepeat: () => {
+                    this.arrowSound.play();
+                }
             });
             this.physics.add.overlap(arrow, this.player, this.killPlayer, null, this);
         });
@@ -125,6 +135,8 @@ class EscapeArrows extends Phaser.Scene{
     killPlayer(){
         this.player.x = this.w / 15;
         this.player.y = this.h / 1.11;
+
+        this.sound.play('death');
     }
 
     exitScene(){

@@ -50,6 +50,8 @@ class Maze extends Phaser.Scene{
 
     preload(){
         this.load.image('gun','../UI Images/gun.png');
+
+        this.load.audio('success','../Audios/success.wav');
     }
 
     create(){
@@ -108,6 +110,8 @@ class Maze extends Phaser.Scene{
         .on('pointerdown',() => {
             this.exitbutton.setScale(0.9);
             this.exitbutton.disableInteractive();
+            this.sound.play('button-click');
+
             const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
             this.tweens.add({
                 targets: fade,
@@ -163,7 +167,10 @@ class Maze extends Phaser.Scene{
             this.physics.add.collider(this.player, this.mazeTiles[i]);
         }
 
-        this.physics.add.collider(this.player, this.gun, () => {this.exitScene()});
+        this.physics.add.collider(this.player, this.gun, () => {
+            this.sound.play('success');
+            this.exitScene();
+        });
 
         this.player.setCollideWorldBounds(true);
 
