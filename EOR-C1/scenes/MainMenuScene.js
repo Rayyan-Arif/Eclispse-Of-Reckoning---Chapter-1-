@@ -1,8 +1,12 @@
 import Phaser from 'phaser';
+import Helper from '../HelperClass';
 
 class MainMenu extends Phaser.Scene{
     constructor(){
         super("main-menu-scene");
+        this.w;
+        this.h;
+        this.background;
         this.title;
         this.subtitle;
         this.play;
@@ -10,6 +14,13 @@ class MainMenu extends Phaser.Scene{
         this.player;
         this.enemy;
         this.knight;
+        this.theme;
+        this.decoration;
+        this.startOnClick;
+        this.overlay;
+    }
+
+    init(){
         this.heightTracker = 0;
     }
 
@@ -19,18 +30,54 @@ class MainMenu extends Phaser.Scene{
         this.load.image("enemy","../UI Images/angryenemy.png");
         this.load.image("knight","../UI Images/guard-alert.png");
         this.load.image('particle', '../UI Images/particle.png');
+        this.load.image('decoration','../UI Images/decoration.png');
         
         this.load.audio('button-click','../Audios/button-click.wav');
+        this.load.audio('theme', '../Audios/theme.mp3');
     }
 
     create(){
-        const background = this.add.image(0,0,"background").setOrigin(0,0);
-        const scaleX = this.scale.width / background.width;
-        const scaleY = this.scale.height / background.height;
-        background.setScale(Math.max(scaleX,scaleY));
+        this.w = this.scale.width;
+        this.h = this.scale.height;
 
-        this.title = this.add.text(this.scale.width / 2, -200, "ECLIPSE OF\nRECKONING", {
-            fontSize: '4.5rem',
+        this.overlay = this.add.rectangle(0,0,this.w,this.h,0x000000).setOrigin(0,0).setAlpha(0.7).setDepth(1);
+
+        this.startOnClick = this.add.text(this.w/2, this.h/2, 'Click anywhere to start!',{
+            fontSize: `${Helper.scaleWidth(40, this.w)}px`,
+            fontFamily: 'Arial',
+            fontStyle: 'bold italic'
+        }).setOrigin(0.5).setDepth(2);
+
+        this.background = this.add.image(0,0,"background").setOrigin(0,0);
+        this.background.setDisplaySize(this.w, this.h);
+
+        if(Helper.startGame){
+            this.startGame();
+        } else {
+            this.input.once('pointerdown',() => {
+                Helper.startGame = true;
+                this.startGame();
+            });
+        }
+    }
+
+    update(){
+
+    }
+
+    startGame(){
+        this.startOnClick.setAlpha(0);
+        this.overlay.setAlpha(0);
+
+        if(!this.sound.get('theme')){
+            this.theme = this.sound.add('theme', {loop: true, volume: 0.2});
+            this.theme.play();
+        }
+
+        this.decoration = this.add.image(this.w/2, this.h/1.9, 'decoration').setOrigin(0.5); 
+
+        this.title = this.add.text(this.w / 2, Helper.scaleHeight(-200, this.h), "ECLIPSE OF\nRECKONING", {
+            fontSize: `${Helper.scaleWidth(70, this.w)}px`,
             fontFamily: 'Segoe UI',
             fontStyle: 'bold',
             align: 'center',
@@ -43,12 +90,12 @@ class MainMenu extends Phaser.Scene{
 
         this.tweens.add({
             targets: this.title,
-            y: this.scale.height/4,           
+            y: this.h/4,           
             duration: 1000,     
             ease: 'Power2'     
         });
 
-        this.subtitle = this.add.text(this.scale.width/2, -this.scale.height, "The Resistive Force",{
+        this.subtitle = this.add.text(this.w/2, -this.h, "The Resistive Force",{
             fontSize: '30px',
             fontFamily: 'Arial',
             fontStyle: 'bold',
@@ -59,14 +106,14 @@ class MainMenu extends Phaser.Scene{
 
         this.tweens.add({
             targets: this.subtitle,
-            y: this.scale.height/2.5,           
+            y: this.h/2.5,           
             duration: 1000,     
             ease: 'Power2'     
         });
 
         this.play = this.add.text(
-            this.scale.width / 2,
-            this.scale.height,
+            this.w / 2,
+            this.h,
             'PLAY',
             {
                 fontSize: '36px',
@@ -74,7 +121,7 @@ class MainMenu extends Phaser.Scene{
                 fontStyle: 'bold',
                 color: '#ffffff',               
                 backgroundColor: '#00874E',     
-                padding: { left: 50, right: 50, top: 10, bottom: 10 },
+                padding: { left: Helper.scaleWidth(50, this.w), right: Helper.scaleWidth(50, this.w), top: Helper.scaleHeight(10, this.h), bottom: Helper.scaleHeight(10, this.h) },
                 shadow: {
                     offsetX: 0,
                     offsetY: 0,
@@ -87,10 +134,11 @@ class MainMenu extends Phaser.Scene{
         ).setOrigin(0.5);
         this.play.setInteractive({ useHandCursor: true })
         .on('pointerdown',()=>{
-          this.play.setScale(0.9);
-          this.sound.play('button-click');
-          const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
-          this.tweens.add({
+        this.play.setScale(0.9);
+        this.sound.play('button-click');
+
+        const fade = this.add.rectangle(0,0,this.w,this.h,0x000000).setOrigin(0,0).setAlpha(0);
+        this.tweens.add({
             targets: fade,
             alpha: 1,
             duration: 1000,
@@ -98,20 +146,20 @@ class MainMenu extends Phaser.Scene{
                 this.scene.stop();
                 this.scene.start('story-narration-scene');
             }
-          })
+        })
         })
         .on('pointerup',()=>this.play.setScale(1))
 
         this.tweens.add({
             targets: this.play,
-            y: this.scale.height/1.5,           
+            y: this.h/1.5,           
             duration: 1000,     
             ease: 'Power2'     
         });
 
         this.credits = this.add.text(
-            this.scale.width / 2,
-            this.scale.height,
+            this.w / 2,
+            this.h,
             'CREDITS',
             {
                 fontSize: '32px',                  
@@ -119,7 +167,7 @@ class MainMenu extends Phaser.Scene{
                 fontStyle: 'bold',
                 color: '#ffffff',                 
                 backgroundColor: '#0E2A2A',       
-                padding: { left: 30, right: 30, top: 10, bottom: 10 },
+                padding: { left: Helper.scaleWidth(50, this.w), right: Helper.scaleWidth(50, this.w), top: Helper.scaleHeight(10, this.h), bottom: Helper.scaleHeight(10, this.h) },
                 shadow: {
                     offsetX: 0,
                     offsetY: 0,
@@ -134,7 +182,8 @@ class MainMenu extends Phaser.Scene{
         .on('pointerdown',()=>{
                 this.credits.setScale(0.9);
                 this.sound.play('button-click');
-                const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
+
+                const fade = this.add.rectangle(0,0,this.w,this.h,0x000000).setOrigin(0,0).setAlpha(0);
                 this.tweens.add({
                     targets: fade,
                     alpha: 1,
@@ -150,17 +199,17 @@ class MainMenu extends Phaser.Scene{
 
         this.tweens.add({
             targets: this.credits,
-            y: this.scale.height/1.3,           
+            y: this.h/1.3,           
             duration: 1000,     
             ease: 'Power2'     
         });
 
-        this.player = this.add.image(-this.scale.width, this.scale.height, "player").setOrigin(0,1);
+        this.player = this.add.image(-this.w, this.h, "player").setOrigin(0,1);
         
-        this.enemy = this.add.image(this.scale.width, this.scale.height, "enemy").setOrigin(0,1);
+        this.enemy = this.add.image(this.w, this.h, "enemy").setOrigin(0,1);
 
-        this.knight = this.add.image(this.scale.width, this.scale.height/0.7, "knight").setOrigin(0,1);
-        this.knight.setPipeline('TextureTintPipeline'); // optional for Phaser 3.60+
+        this.knight = this.add.image(this.w, this.h/0.7, "knight").setOrigin(0,1);
+        this.knight.setPipeline('TextureTintPipeline');
         this.knight.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
         this.knight.setScale(8);
 
@@ -188,21 +237,21 @@ class MainMenu extends Phaser.Scene{
 
         this.tweens.add({
             targets: this.player,
-            x: this.scale.width*0.01,            
+            x: this.w*0.01,            
             duration: 1000,     
             ease: 'Power2'     
         });
 
         this.tweens.add({
             targets: this.enemy,
-            x: this.scale.width/1.6,            
+            x: this.w/1.6,            
             duration: 1000,     
             ease: 'Power2'     
         });
 
         this.tweens.add({
             targets: this.knight,
-            x: this.scale.width/3.5,            
+            x: this.w/3.5,            
             duration: 1000,     
             ease: 'Power2'     
         });
@@ -216,7 +265,7 @@ class MainMenu extends Phaser.Scene{
         ];
 
         for(let i=0 ; i<10 ; i++){
-            const particle = this.add.image(widths[i],heights[i],'particle');
+            const particle = this.add.image(Helper.scaleWidth(widths[i], this.w),Helper.scaleHeight(heights[i], this.h),'particle');
             this.tweens.add({
                 targets: particle,
                 alpha: 0,
@@ -225,18 +274,6 @@ class MainMenu extends Phaser.Scene{
                 repeat: -1
             });
         }
-    }
-
-    update(){
-
-    }
-
-    getRandomWidth(){
-        return Math.floor(Math.random()*this.scale.width + 1);
-    }
-
-    getRandomHeight(){
-        return Math.floor(Math.random()*this.scale.height + 1);
     }
 }
 

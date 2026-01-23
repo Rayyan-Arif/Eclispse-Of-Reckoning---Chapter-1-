@@ -183,14 +183,14 @@ class Maze extends Phaser.Scene{
         const {left, right, up, down} = this.cursors;
         if(left.isDown){
             this.player.setTexture('player-left');
-            this.player.setVelocityX(-this.playerSpeed/1.5);
+            this.player.setVelocityX(Helper.scaleWidth(-this.playerSpeed/1.5, this.w));
         } else if(right.isDown){
             this.player.setTexture('player-right');
-            this.player.setVelocityX(this.playerSpeed/1.5);
+            this.player.setVelocityX(Helper.scaleWidth(this.playerSpeed/1.5, this.w));
         } else if(up.isDown){
-            this.player.setVelocityY(-this.playerSpeed);
+            this.player.setVelocityY(Helper.scaleHeight(-this.playerSpeed, this.h));
         } else if(down.isDown){
-            this.player.setVelocityY(this.playerSpeed);
+            this.player.setVelocityY(Helper.scaleHeight(this.playerSpeed, this.h));
         }
     }
 

@@ -1,8 +1,12 @@
 import Phaser from 'phaser';
+import Helper from '../HelperClass';
 
 class Credits extends Phaser.Scene{
     constructor(){
         super('credits-scene');
+        this.w;
+        this.h;
+        this.background;
         this.title;
         this.devTitle;
         this.devName;
@@ -14,13 +18,14 @@ class Credits extends Phaser.Scene{
     preload(){}
 
     create(){
-        const background = this.add.image(0,0,'background').setOrigin(0,0).setAlpha(0);
-        const scaleX = this.scale.width / background.width;
-        const scaleY = this.scale.height / background.height;
-        background.setScale(Math.max(scaleX,scaleY));
+        this.w = this.scale.width;
+        this.h = this.scale.height;
+
+        this.background = this.add.image(0,0,'background').setOrigin(0,0).setAlpha(0);
+        this.background.setDisplaySize(this.w, this.h);
 
         this.tweens.add({
-            targets: background,
+            targets: this.background,
             alpha: 1,
             duration: 100
         });
@@ -34,7 +39,7 @@ class Credits extends Phaser.Scene{
         ];
 
         for(let i=0 ; i<10 ; i++){
-            const particle = this.add.image(widths[i],heights[i],'particle');
+            const particle = this.add.image(Helper.scaleWidth(widths[i], this.w),Helper.scaleHeight(heights[i], this.h),'particle');
             this.tweens.add({
                 targets: particle,
                 alpha: 0,
@@ -49,12 +54,11 @@ class Credits extends Phaser.Scene{
             this.scale.height / 4,            
             'CREDITS',
             {
-                fontSize: '50px',
+                fontSize: `${Helper.scaleWidth(50, this.w)}px`,
                 fontFamily: 'Segoe UI',
                 fontStyle: 'bold',
                 color: '#20D38B',       
-                padding: { left: 50, right: 50, top: 10, bottom: 10 },
-                
+                padding: { left: Helper.scaleWidth(50, this.w), right: Helper.scaleWidth(50, this.w), top: Helper.scaleHeight(10, this.h), bottom: Helper.scaleHeight(10, this.h) },                
             }
         ).setOrigin(0.5);
 
@@ -63,12 +67,10 @@ class Credits extends Phaser.Scene{
             this.scale.height / 2.5,
             'Developer',
             {
-                fontSize: '30px',
+                fontSize: `${Helper.scaleWidth(30, this.w)}px`,
                 fontFamily: 'Segoe UI',
-                // fontStyle: 'bold',
                 color: '#20D38B',       
-                padding: { left: 50, right: 50, top: 10, bottom: 10 },
-                
+                padding: { left: Helper.scaleWidth(50, this.w), right: Helper.scaleWidth(50, this.w), top: Helper.scaleHeight(10, this.h), bottom: Helper.scaleHeight(10, this.h) },                
             }
         ).setOrigin(0.5);
 
@@ -77,11 +79,10 @@ class Credits extends Phaser.Scene{
             this.scale.height / 2.2,
             'Rayyan Arif',
             {
-                fontSize: '23px',
+                fontSize: `${Helper.scaleWidth(23, this.w)}px`,
                 fontFamily: 'Segoe UI',
                 color: 'white',       
-                padding: { left: 50, right: 50, top: 10, bottom: 10 },
-                
+                padding: { left: Helper.scaleWidth(50, this.w), right: Helper.scaleWidth(50, this.w), top: Helper.scaleHeight(10, this.h), bottom: Helper.scaleHeight(10, this.h) },              
             }
         ).setOrigin(0.5);
 
@@ -90,11 +91,10 @@ class Credits extends Phaser.Scene{
             this.scale.height / 1.7,
             'Thank you for playing',
             {
-                fontSize: '27px',
+                fontSize: `${Helper.scaleWidth(27, this.w)}px`,
                 fontFamily: 'Segoe UI',
                 color: '#03a87c',       
-                padding: { left: 50, right: 50, top: 10, bottom: 10 },
-                
+                padding: { left: Helper.scaleWidth(50, this.w), right: Helper.scaleWidth(50, this.w), top: Helper.scaleHeight(10, this.h), bottom: Helper.scaleHeight(10, this.h) },
             }
         ).setOrigin(0.5);
 
@@ -103,11 +103,10 @@ class Credits extends Phaser.Scene{
             this.scale.height / 1.5,
             'Eclipse Of Reckoning',
             {
-                fontSize: '23px',
+                fontSize: `${Helper.scaleWidth(23, this.w)}px`,
                 fontFamily: 'Segoe UI',
                 color: '#20D38B',       
-                padding: { left: 50, right: 50, top: 10, bottom: 10 },
-                
+                padding: { left: Helper.scaleWidth(50, this.w), right: Helper.scaleWidth(50, this.w), top: Helper.scaleHeight(10, this.h), bottom: Helper.scaleHeight(10, this.h) },                
             }
         ).setOrigin(0.5);
 
@@ -116,12 +115,12 @@ class Credits extends Phaser.Scene{
             this.scale.height / 1.3,
             'BACK',
             {
-                fontSize: '32px',
+                fontSize: `${Helper.scaleWidth(32, this.w)}px`,
                 fontFamily: 'Segoe UI',
                 fontStyle: 'bold',
                 backgroundColor: '#0E2A2A',
                 color: '#20D38B',       
-                padding: { left: 50, right: 50, top: 10, bottom: 10 },
+                padding: { left: Helper.scaleWidth(50, this.w), right: Helper.scaleWidth(50, this.w), top: Helper.scaleHeight(10, this.h), bottom: Helper.scaleHeight(10, this.h) },
                 shadow: {
                     offsetX: 0,
                     offsetY: 0,
@@ -136,6 +135,7 @@ class Credits extends Phaser.Scene{
         .on('pointerdown',()=>{
             this.back.setScale(0.9);
             this.sound.play('button-click');
+
             const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
             this.tweens.add({
                 targets: fade,

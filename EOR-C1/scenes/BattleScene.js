@@ -19,12 +19,15 @@ class Battle extends Phaser.Scene{
         this.enemies = [];
         this.newTextureEnemy = [];
         this.bullet;
+        this.timerCount;
+        this.showReloading;
+    }
+
+    init(){
         this.fightStarted = false;
         this.isDamaged = false;
-        this.timerCount;
         this.timeEnded = false;
         this.isReloading = false;
-        this.showReloading;
         this.canMove = true;
     }
 
@@ -223,20 +226,20 @@ class Battle extends Phaser.Scene{
                     this.player.body.setOffset(this.player.body.offset.x + Helper.scaleWidth(230, this.w), this.player.body.offset.y);
                     this.player.setTexture('player-fight-left');
                 }
-                this.player.setVelocityX(-this.playerSpeed/1.5);
+                this.player.setVelocityX(Helper.scaleWidth(-this.playerSpeed/1.5, this.w));
             }
             if(right.isDown){
                 if(this.player.texture.key !== 'player-fight-right'){
                     this.player.body.setOffset(this.player.body.offset.x - Helper.scaleWidth(230, this.w), this.player.body.offset.y);
                     this.player.setTexture('player-fight-right');
                 }
-                this.player.setVelocityX(this.playerSpeed/1.5);
+                this.player.setVelocityX(Helper.scaleWidth(this.playerSpeed/1.5, this.w));
             }
             if(up.isDown){
-                this.player.setVelocityY(-this.playerSpeed);
+                this.player.setVelocityY(Helper.scaleHeight(-this.playerSpeed, this.h));
             }
             if(down.isDown){
-                this.player.setVelocityY(this.playerSpeed);
+                this.player.setVelocityY(Helper.scaleHeight(this.playerSpeed, this.h));
             }
         }
 
@@ -247,7 +250,9 @@ class Battle extends Phaser.Scene{
 
         if(this.isReloading){
             for(let i=0 ; i<5 ; i++){
-                if(this.physics.world.overlap(this.enemies[i], this.bullet)) this.generatePositionEnemy(this.enemies[i]);
+                if(this.physics.world.overlap(this.enemies[i], this.bullet)){
+                    this.generatePositionEnemy(this.enemies[i]);
+                }
             }
         }
     }
@@ -276,11 +281,11 @@ class Battle extends Phaser.Scene{
             enemy.x = Math.random() * this.w;
             enemy.y = this.h * 1.1;
         } else if(random === 2){
-            enemy.x = Math.random() * this.h;
-            enemy.y = -this.w * 1.1;
+            enemy.x = -this.w * 1.1;
+            enemy.y = Math.random() * this.h;
         } else if(random === 3){
-            enemy.x = Math.random() * this.h;
-            enemy.y = this.w * 1.1;
+            enemy.x = this.w * 1.1;
+            enemy.y = Math.random() * this.h;
         }
     }
 
@@ -401,7 +406,7 @@ class Battle extends Phaser.Scene{
         this.sound.play('death');
 
         for(let i=0 ; i<5 ; i++){
-            this.enemies[i].setVelocity(0);
+            this.generatePositionEnemy(this.enemies[i]);
         }
 
         this.time.delayedCall(3000, () => {

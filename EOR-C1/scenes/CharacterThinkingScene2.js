@@ -14,9 +14,12 @@ class CharacterThinking2 extends Phaser.Scene{
             "Enough of your games!",
         ];
 
+        this.dialogue;
+    }
+
+    init(){   
         this.index = 0;
         this.counter = 0;
-        this.dialogue;
     }
 
     preload(){

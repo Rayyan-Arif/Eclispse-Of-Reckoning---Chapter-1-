@@ -1,8 +1,11 @@
 import Phaser from "phaser";
+import Helper from "../HelperClass";
 
 class CharacterThinking1 extends Phaser.Scene{
     constructor(){
         super("character-thinking-1-scene");
+        this.w;
+        this.h;
         this.background;
         this.dialogueText = [
             "I will not allow\nPurple Thorn to succeed.",
@@ -12,10 +15,12 @@ class CharacterThinking1 extends Phaser.Scene{
             "There must be his\n traps on the way.",
             "They will try to stop me!",
         ];
+        this.dialogue;
+    }
 
+    init(){
         this.index = 0;
         this.counter = 0;
-        this.dialogue;
     }
 
     preload(){
@@ -23,6 +28,9 @@ class CharacterThinking1 extends Phaser.Scene{
     }
 
     create(){
+        this.w = this.scale.width;
+        this.h = this.scale.height;
+
         this.background = this.add.image(0,0,'thinking-bg').setOrigin(0,0).setAlpha(0);
         this.background.setDisplaySize(this.scale.width, this.scale.height);
 
@@ -32,12 +40,12 @@ class CharacterThinking1 extends Phaser.Scene{
             duration: 1000
         });
 
-        this.dialogue = this.add.text(760,330,'',{
-            fontSize: '30px',
+        this.dialogue = this.add.text(Helper.scaleWidth(760, this.w),Helper.scaleHeight(330, this.h),'',{
+            fontSize: `${Helper.scaleWidth(30, w)}px`,
             fontFamily: 'Arial',
             color: 'black',
             align: 'center',
-            lineSpacing: 30
+            lineSpacing: Helper.scaleWidth(30, w)
         }).setOrigin(0.5);
 
         this.time.delayedCall(2000,() => {

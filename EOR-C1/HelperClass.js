@@ -2,7 +2,8 @@ class Helper{
     constructor(){
         this.baseWidth = 1024;
         this.baseHeight = 768;
-        this.deathCounts = 0;
+        this.killCount = 0;
+        this.startGame = false;
     }
 
     scaleWidth(value, scaleW){

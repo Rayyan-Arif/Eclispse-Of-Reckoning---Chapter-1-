@@ -1,5 +1,5 @@
 import './style.css'
-import Phaser from 'phaser';
+import Phaser, { Scene } from 'phaser';
 import MainMenu from '../scenes/MainMenuScene';
 import Credits from '../scenes/CreditsScene';
 import Story from '../scenes/StoryScene';

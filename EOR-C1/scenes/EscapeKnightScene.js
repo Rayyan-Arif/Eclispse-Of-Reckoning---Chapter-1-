@@ -13,14 +13,17 @@ class EscapeKnight extends Phaser.Scene{
         this.playerSpeed;
         this.slab;
         this.knight;
-        this.knightSleeping = true;
-        this.timerNotRegistered = true;
-        this.knightAttackPlayer = false;
         this.sleepTimer;
         this.hint;
         this.diedText;
         this.alert;
         this.alertSound;
+    }
+
+    init(){
+        this.knightSleeping = true;
+        this.timerNotRegistered = true;
+        this.knightAttackPlayer = false;
     }
 
     preload(){
@@ -48,7 +51,7 @@ class EscapeKnight extends Phaser.Scene{
         this.player.setDepth(1);
 
         this.exitbutton = this.add.text(Helper.scaleWidth(90,this.w),Helper.scaleHeight(40,this.h),'EXIT',{
-            fontSize: '32px',
+            fontSize: `${Helper.scaleWidth(32, this.w)}px`,
             fontFamily: 'Segoe UI',
             fontStyle: 'bold',
             backgroundColor: '#0E2A2A',
@@ -143,10 +146,10 @@ moment as you have no weapon.
         const {left, right} = this.cursors;
         if(left.isDown && !this.knightAttackPlayer){
             this.player.setTexture('player-left');
-            this.player.setVelocityX(-this.playerSpeed);
+            this.player.setVelocityX(Helper.scaleWidth(-this.playerSpeed, this.w));
         } else if(right.isDown && !this.knightAttackPlayer){
             this.player.setTexture('player-right');
-            this.player.setVelocityX(this.playerSpeed);
+            this.player.setVelocityX(Helper.scaleWidth(this.playerSpeed, this.w));
         }
 
         this.wakeUpKnight();
@@ -203,6 +206,8 @@ moment as you have no weapon.
         if(this.knightAttackPlayer){
             this.input.keyboard.enabled = false;
             this.alert.setAlpha(0);
+            this.alertSound.stop();
+
             this.tweens.add({
                 targets: this.knight,
                 x: this.player.x + this.player.width/3,

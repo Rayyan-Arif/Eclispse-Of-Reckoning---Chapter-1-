@@ -53,11 +53,11 @@ class EscapeArrows extends Phaser.Scene{
         this.hint = this.add.text(this.w/2, this.h/2, 'Escape The Arrows!!!',{
             color: 'black',
             fontStyle: 'bold',
-            fontSize: '40px'
+            fontSize: `${Helper.scaleWidth(40, this.w)}px`
         }).setOrigin(0.5).setAlpha(0);
 
         this.exitbutton = this.add.text(Helper.scaleWidth(90,this.w),Helper.scaleHeight(40,this.h),'EXIT',{
-            fontSize: '32px',
+            fontSize: `${Helper.scaleWidth(32, this.w)}px`,
             fontFamily: 'Segoe UI',
             fontStyle: 'bold',
             backgroundColor: '#0E2A2A',
@@ -103,7 +103,7 @@ class EscapeArrows extends Phaser.Scene{
             this.tweens.add({
                 targets: arrow,
                 duration: 550,
-                y: this.scale.height + 100,
+                y: this.scale.height + Helper.scaleHeight(100, this.h),
                 repeat: -1,
                 onRepeat: () => {
                     this.arrowSound.play();
@@ -122,11 +122,11 @@ class EscapeArrows extends Phaser.Scene{
         const {left, right} = this.cursors;
         if(left.isDown){
             this.player.setTexture('player-left');
-            this.player.setVelocityX(-this.playerSpeed);
+            this.player.setVelocityX(Helper.scaleWidth(-this.playerSpeed, this.w));
         } 
         if(right.isDown){
             this.player.setTexture('player-right');
-            this.player.setVelocityX(this.playerSpeed);
+            this.player.setVelocityX(Helper.scaleWidth(this.playerSpeed, this.w));
         }
         
         this.exitScene();

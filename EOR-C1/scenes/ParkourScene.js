@@ -1,9 +1,11 @@
 import Phaser from "phaser";
+import Helper from "../HelperClass";
 
 class Parkour extends Phaser.Scene{
     constructor(){
         super("parkour-scene");
-        this.imageChange = true;
+        this.w;
+        this.h;
         this.parkour;
         this.exitButton;
         this.title;
@@ -12,11 +14,16 @@ class Parkour extends Phaser.Scene{
         this.slab3;
         this.player;
         this.playerSpeed = 200;
-        this.buttonPressed = false;
-        this.slabMoving = false;
         this.slabButton;
         this.slabButtonBg;
         this.hint;
+    }
+
+    init(){
+        this.imageChange = true;
+        this.buttonPressed = false;
+        this.slabMoving = false;
+        this.isDiedOnce = false;
     }
     
     preload(){
@@ -30,22 +37,25 @@ class Parkour extends Phaser.Scene{
     }
     
     create(){
+        this.w = this.scale.width;
+        this.h = this.scale.height;
+
         this.parkour = this.add.image(0,0,'parkour').setOrigin(0,0);
         this.parkour.setDisplaySize(this.scale.width, this.scale.height);
 
-        this.title = this.add.text(500,45,"Don't fall into the LAVA!!!",{
-            fontSize: '30px',
+        this.title = this.add.text(Helper.scaleWidth(500, this.w),Helper.scaleHeight(45, this.h),"Don't fall into the LAVA!!!",{
+            fontSize: `${Helper.scaleWidth(30, this.w)}px`,
             fontStyle: 'bold',
             color: 'black'
         }).setOrigin(0.5);
 
-        this.exitButton = this.add.text(90,40,'EXIT',{
-            fontSize: '32px',
+        this.exitButton = this.add.text(Helper.scaleWidth(90, this.w),Helper.scaleHeight(40, this.h),'EXIT',{
+            fontSize: `${Helper.scaleWidth(32, this.w)}px`,
             fontFamily: 'Segoe UI',
             fontStyle: 'bold',
             backgroundColor: '#0E2A2A',
             color: '#20D38B',       
-            padding: { left: 50, right: 50, top: 10, bottom: 10 },
+            padding: { left: Helper.scaleWidth(50, this.w), right: Helper.scaleWidth(50, this.w), top: Helper.scaleHeight(10, this.h), bottom: Helper.scaleHeight(10, this.h) },
             shadow: {
                 offsetX: 0,
                 offsetY: 0,
@@ -82,17 +92,37 @@ class Parkour extends Phaser.Scene{
             ease: 'linear'
         });
 
-        this.player = this.physics.add.image(70,560,'player-right').setOrigin(0.5);
+        this.player = this.physics.add.image(Helper.scaleWidth(70, this.w),Helper.scaleHeight(560, this.h),'player-right').setOrigin(0.5).setDepth(1);
         this.player.setScale(1.7);
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        this.slab1 = this.add.rectangle(190, 520, 150, 10, 0x000000).setOrigin(0,0);
-        this.slab2 = this.add.rectangle(410, 450, 150, 10, 0x000000).setOrigin(0,0);
-        this.slab3 = this.add.rectangle(640, 400, 150, 10, 0x000000).setOrigin(0,0);
+        this.slab1 = this.add.rectangle(
+            Helper.scaleWidth(190, this.w),
+            Helper.scaleHeight(520, this.h),
+            Helper.scaleWidth(150, this.w),
+            Helper.scaleHeight(10, this.h),
+            0x000000
+        ).setOrigin(0, 0);
 
-        this.slabButtonBg = this.add.rectangle(this.scale.width/2.1, this.scale.height/2.4, 50, 50, 'black').setOrigin(0.5);
-        this.slabButton = this.add.circle(this.scale.width/2.1, this.scale.height/2.4, 20, 0xff0000).setOrigin(0.5);
+        this.slab2 = this.add.rectangle(
+            Helper.scaleWidth(410, this.w),
+            Helper.scaleHeight(450, this.h),
+            Helper.scaleWidth(150, this.w),
+            Helper.scaleHeight(10, this.h),
+            0x000000
+        ).setOrigin(0, 0);
+
+        this.slab3 = this.add.rectangle(
+            Helper.scaleWidth(640, this.w),
+            Helper.scaleHeight(400, this.h),
+            Helper.scaleWidth(150, this.w),
+            Helper.scaleHeight(10, this.h),
+            0x000000
+        ).setOrigin(0, 0);
+
+        this.slabButtonBg = this.add.rectangle(this.scale.width/2.1, this.scale.height/2.4, Helper.scaleWidth(50, this.w), Helper.scaleHeight(50, this.h), 'black').setOrigin(0.5);
+        this.slabButton = this.add.circle(this.scale.width/2.1, this.scale.height/2.4, Helper.scaleWidth(20, this.w), 0xff0000).setOrigin(0.5);
         this.slabButton.setInteractive({ useHandCursor: true })
         .on('pointerdown',() => {
             this.sound.play('enable-parkour-button');
@@ -102,8 +132,8 @@ class Parkour extends Phaser.Scene{
             this.hint.setText('You can now safely\n go to the other side!');
         });
 
-        this.hint = this.add.text(this.scale.width/4.3, this.scale.height/2.4, 'Is this button dangerous? -->',{
-            fontSize: '25px',
+        this.hint = this.add.text(this.scale.width/4.3, this.scale.height/2.4, 'Do not press the button -->',{
+            fontSize: `${Helper.scaleWidth(25, this.w)}px`,
             color: 'black',
             fontStyle: 'bold',
             align: 'center'
@@ -112,12 +142,12 @@ class Parkour extends Phaser.Scene{
 
     update(){
         if(this.checkIfInLava()){
-            this.player.x = 70;
-            this.player.y = 560;
+            this.player.x = Helper.scaleWidth(70, this.w);
+            this.player.y = Helper.scaleHeight(560, this.h);
         }
 
         if(!this.checkIfInAir()){
-            this.player.setVelocityY(this.playerSpeed*3)
+            this.player.setVelocityY(Helper.scaleHeight(this.playerSpeed*3, this.h))
         } else{
             this.player.setVelocityY(0);
         }
@@ -127,11 +157,11 @@ class Parkour extends Phaser.Scene{
         const {left,right,up} = this.cursors;
         if(left.isDown){
             this.player.setTexture('player-left');
-            this.player.setVelocityX(-this.playerSpeed*1.5);
+            this.player.setVelocityX(Helper.scaleWidth(-this.playerSpeed*1.5, this.w));
         }
         if(right.isDown){
             this.player.setTexture('player-right');
-            this.player.setVelocityX(this.playerSpeed*1.5);
+            this.player.setVelocityX(Helper.scaleWidth(this.playerSpeed*1.5, this.w));
         }
         if(Phaser.Input.Keyboard.JustDown(up) && this.checkIfInAir()){
             this.sound.play('jump');
@@ -145,36 +175,65 @@ class Parkour extends Phaser.Scene{
     moveUp(){
         this.tweens.add({
             targets: this.player,
-            y: this.player.y - 100,
+            y: this.player.y - Helper.scaleHeight(100, this.h),
             duration: 150,
             ease: 'Power2'
         });
     }
 
     checkIfInAir(){
-        if(((this.player.x < 5) || (this.player.x >= 5 && this.player.x < 153)) && this.player.y >= 555 && this.player.y <= 570) return true;
-        else if(((this.player.x > this.scale.width - 5) ||  (this.player.x >= 875 && this.player.x < this.scale.width)) && this.player.y >= 560 && this.player.y <= 565) return true;
-        else if(this.player.x >= 170 && this.player.x < 360 && this.player.y >= 497 && this.player.y <= 502) return true;
-        else if(this.player.x >= 390 && this.player.x < 580 && this.player.y >= 425 && this.player.y <= 432) return true;
-        else if(this.player.x >= 620 && this.player.x < 810 && this.player.y >= 377 && this.player.y <= 382 && this.buttonPressed) return true;
+        if (
+            ((this.player.x < Helper.scaleWidth(5, this.w)) || 
+            (this.player.x >= Helper.scaleWidth(5, this.w) && this.player.x < Helper.scaleWidth(153, this.w))) &&
+            this.player.y >= Helper.scaleHeight(555, this.h) && this.player.y <= Helper.scaleHeight(570, this.h)
+        ) return true;
+
+        else if (
+            ((this.player.x > this.w - Helper.scaleWidth(5, this.w)) || 
+            (this.player.x >= Helper.scaleWidth(875, this.w) && this.player.x < this.w)) &&
+            this.player.y >= Helper.scaleHeight(560, this.h) && this.player.y <= Helper.scaleHeight(565, this.h)
+        ) return true;
+
+        else if (
+            this.player.x >= Helper.scaleWidth(170, this.w) && this.player.x < Helper.scaleWidth(360, this.w) &&
+            this.player.y >= Helper.scaleHeight(497, this.h) && this.player.y <= Helper.scaleHeight(502, this.h)
+        ) return true;
+
+        else if (
+            this.player.x >= Helper.scaleWidth(390, this.w) && this.player.x < Helper.scaleWidth(580, this.w) &&
+            this.player.y >= Helper.scaleHeight(425, this.h) && this.player.y <= Helper.scaleHeight(432, this.h)
+        ) return true;
+
+        else if (
+            this.player.x >= Helper.scaleWidth(620, this.w) && this.player.x < Helper.scaleWidth(810, this.w) &&
+            this.player.y >= Helper.scaleHeight(377, this.h) && this.player.y <= Helper.scaleHeight(382, this.h) &&
+            this.buttonPressed
+        ) return true;
+
         else return false;
     }
 
     checkIfInLava(){
-        if(this.player.x >= 153 && this.player.x < 875 && this.player.y >= 620){
+        if(this.player.x >= Helper.scaleWidth(153, this.w) && this.player.x < Helper.scaleWidth(875, this.w) && this.player.y >= Helper.scaleHeight(620, this.h)){
             this.sound.play('death');
+            
+            if(!this.isDiedOnce){
+                this.hint.setText('I guess you should press it!');
+                this.isDiedOnce = true;
+            }
+
             return true;
         }
         else return false;
     }
 
     moveSlab(){
-        if(!this.slabMoving && this.player.x >= 600 && this.player.x < 810 && this.player.y >= 377 && this.player.y <= 382 && !this.buttonPressed){
+        if(!this.slabMoving && this.player.x >= Helper.scaleWidth(600, this.w) && this.player.x < Helper.scaleWidth(810, this.w) && this.player.y >= Helper.scaleHeight(377, this.h) && this.player.y <= Helper.scaleHeight(382, this.h) && !this.buttonPressed){
             this.slabMoving = true;
             this.tweens.add({
                 targets: this.slab3,
                 duration: 200,
-                x: 840,
+                x: Helper.scaleWidth(840, this.w),
                 ease: 'linear',
                 yoyo: true,
                 onComplete: () => {
@@ -185,7 +244,7 @@ class Parkour extends Phaser.Scene{
     }
 
     exitScene(){
-        if(this.player.x > this.scale.width - 5){
+        if(this.player.x > this.scale.width - Helper.scaleWidth(5, this.w)){
             const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
             this.tweens.add({
                 targets: fade,
