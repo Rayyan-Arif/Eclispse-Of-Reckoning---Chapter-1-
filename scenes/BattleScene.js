@@ -130,7 +130,7 @@ class Battle extends Phaser.Scene{
             this.sound.play('button-click');
 
             this.input.setDefaultCursor('default');
-            this.fightStarted = true;
+            this.time.delayedCall(0, () => {this.fightStarted = true});
 
             this.startFight();
 
@@ -380,7 +380,11 @@ class Battle extends Phaser.Scene{
 
             this.sound.play('win');
 
-            for(let i=0 ; i<5 ; i++) this.generatePositionEnemy(this.enemies[i]);
+            for(let i=0 ; i<5 ; i++){
+                this.generatePositionEnemy(this.enemies[i]);
+                this.enemies[i].setAlpha(0);
+                this.physics.moveToObject(this.enemies[i], this.player, 0);
+            }
 
             const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0).setDepth(4);
                 this.time.delayedCall(3000, () => {
