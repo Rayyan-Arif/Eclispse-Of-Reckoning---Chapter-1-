@@ -18,6 +18,9 @@ class Parkour extends Phaser.Scene{
         this.slabButtonBg;
         this.hint;
         this.emitter;
+        this.floor1;
+        this.floor2;
+        this.lava;
     }
 
     init(){
@@ -100,8 +103,10 @@ class Parkour extends Phaser.Scene{
             ease: 'linear'
         });
 
-        this.player = this.physics.add.image(Helper.scaleWidth(70, this.w),Helper.scaleHeight(560, this.h),'player-right').setOrigin(0.5).setDepth(1);
+        this.player = this.physics.add.image(Helper.scaleWidth(70, this.w),Helper.scaleHeight(540, this.h),'player-right').setOrigin(0.5).setDepth(1);
         this.player.setScale(1.7);
+        this.player.body.setSize(this.player.width/4, this.player.height/3.5);
+        this.player.body.setGravityY(Helper.scaleHeight(1000, this.h));
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -129,6 +134,10 @@ class Parkour extends Phaser.Scene{
             0x000000
         ).setOrigin(0, 0);
 
+        this.physics.add.existing(this.slab1, true);
+        this.physics.add.existing(this.slab2, true);
+        this.physics.add.existing(this.slab3, true);
+
         this.slabButtonBg = this.add.rectangle(this.scale.width/2.1, this.scale.height/2.4, Helper.scaleWidth(50, this.w), Helper.scaleHeight(50, this.h), 'black').setOrigin(0.5);
         this.slabButton = this.add.circle(this.scale.width/2.1, this.scale.height/2.4, Helper.scaleWidth(20, this.w), 0xff0000).setOrigin(0.5);
         this.slabButton.setInteractive({ useHandCursor: true })
@@ -146,19 +155,27 @@ class Parkour extends Phaser.Scene{
             fontStyle: 'bold',
             align: 'center'
         }).setOrigin(0.5);
+
+        this.floor1 = this.add.rectangle(-1, Helper.scaleHeight(580, this.h), Helper.scaleWidth(130, this.w), Helper.scaleHeight(10, this.h), 0x000000).setOrigin(0,0);
+        this.floor2 = this.add.rectangle(Helper.scaleWidth(896, this.w), Helper.scaleHeight(580, this.h), Helper.scaleWidth(130, this.w), Helper.scaleHeight(10, this.h), 0x000000).setOrigin(0,0);
+
+        this.physics.add.existing(this.floor1, true);
+        this.physics.add.existing(this.floor2, true);
+
+        this.lava = this.add.rectangle(this.w/2, Helper.scaleHeight(640, this.h), this.w/1.3, Helper.scaleHeight(1, this.h), 0xff3300).setOrigin(0.5);
+        this.physics.add.existing(this.lava, true);
+
+        this.physics.add.collider(this.player, this.slab1);
+        this.physics.add.collider(this.player, this.slab2);
+        this.physics.add.collider(this.player, this.slab3, () => {
+            this.moveSlab();
+        });
+        this.physics.add.collider(this.player, this.floor1);
+        this.physics.add.collider(this.player, this.floor2);
+        this.physics.add.overlap(this.player, this.lava, () => {this.killPlayer()});
     }
 
     update(){ 
-        if(this.checkIfInLava()){
-            this.player.x = Helper.scaleWidth(70, this.w);
-            this.player.y = Helper.scaleHeight(560, this.h);
-        }
-
-        if(!this.checkIfInAir()){
-            this.player.setVelocityY(this.playerSpeed*3)
-        } else{
-            this.player.setVelocityY(0);
-        }
         if(this.player.x < 5) this.player.x = 0;
         this.player.setVelocityX(0);
 
@@ -171,77 +188,34 @@ class Parkour extends Phaser.Scene{
             this.player.setTexture('player-right');
             this.player.setVelocityX(this.playerSpeed*1.5);
         }
-        if(Phaser.Input.Keyboard.JustDown(up) && this.checkIfInAir()){
+        if(Phaser.Input.Keyboard.JustDown(up) && this.player.body.blocked.down){
+            this.player.setVelocityY(Helper.scaleHeight(-this.playerSpeed*2, this.h));
             this.sound.play('jump');
-            this.moveUp();
         }
 
-        this.moveSlab();
         this.exitScene();
     }
 
-    moveUp(){
-        this.tweens.add({
-            targets: this.player,
-            y: this.player.y - Helper.scaleHeight(100, this.h),
-            duration: 150,
-            ease: 'Power2'
-        });
-    }
+    killPlayer(){
+        this.sound.play('death');
 
-    checkIfInAir(){
-        if (
-            ((this.player.x < Helper.scaleWidth(5, this.w)) || 
-            (this.player.x >= Helper.scaleWidth(5, this.w) && this.player.x < Helper.scaleWidth(150, this.w))) &&
-            this.player.y >= Helper.scaleHeight(560, this.h) && this.player.y <= Helper.scaleHeight(565, this.h)
-        ) return true;
+        this.emitter.explode(40, this.player.x, this.player.y);
+        
+        if(!this.isDiedOnce){
+            this.hint.setText('I guess you should press it!');
+            this.isDiedOnce = true;
+        }  
 
-        else if (
-            ((this.player.x > this.w - Helper.scaleWidth(5, this.w)) || 
-            (this.player.x >= Helper.scaleWidth(875, this.w) && this.player.x < this.w)) &&
-            this.player.y >= Helper.scaleHeight(560, this.h) && this.player.y <= Helper.scaleHeight(565, this.h)
-        ) return true;
-
-        else if (
-            this.player.x >= Helper.scaleWidth(170, this.w) && this.player.x < Helper.scaleWidth(360, this.w) &&
-            this.player.y >= Helper.scaleHeight(497, this.h) && this.player.y <= Helper.scaleHeight(502, this.h)
-        ) return true;
-
-        else if (
-            this.player.x >= Helper.scaleWidth(390, this.w) && this.player.x < Helper.scaleWidth(580, this.w) &&
-            this.player.y >= Helper.scaleHeight(425, this.h) && this.player.y <= Helper.scaleHeight(432, this.h)
-        ) return true;
-
-        else if (
-            this.player.x >= Helper.scaleWidth(620, this.w) && this.player.x < Helper.scaleWidth(810, this.w) &&
-            this.player.y >= Helper.scaleHeight(377, this.h) && this.player.y <= Helper.scaleHeight(382, this.h) &&
-            this.buttonPressed
-        ) return true;
-
-        else return false;
-    }
-
-    checkIfInLava(){
-        if(this.player.x >= Helper.scaleWidth(150, this.w) && this.player.x < Helper.scaleWidth(875, this.w) && this.player.y >= Helper.scaleHeight(620, this.h)){
-            this.sound.play('death');
-
-            this.emitter.explode(40, this.player.x, this.player.y);
-            
-            if(!this.isDiedOnce){
-                this.hint.setText('I guess you should press it!');
-                this.isDiedOnce = true;
-            }
-
-            return true;
-        }
-        else return false;
+        this.player.x = Helper.scaleWidth(70, this.w);
+        this.player.y = Helper.scaleHeight(540, this.h);
+        this.player.setVelocity(0,0);
     }
 
     moveSlab(){
-        if(!this.slabMoving && this.player.x >= Helper.scaleWidth(600, this.w) && this.player.x < Helper.scaleWidth(810, this.w) && this.player.y >= Helper.scaleHeight(377, this.h) && this.player.y <= Helper.scaleHeight(382, this.h) && !this.buttonPressed){
+        if(!this.slabMoving && !this.buttonPressed){
             this.slabMoving = true;
             this.tweens.add({
-                targets: this.slab3,
+                targets: [this.slab3.body, this.slab3],
                 duration: 200,
                 x: Helper.scaleWidth(840, this.w),
                 ease: 'linear',

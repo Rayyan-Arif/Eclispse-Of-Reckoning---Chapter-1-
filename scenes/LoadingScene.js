@@ -68,7 +68,7 @@ class Loading extends Phaser.Scene{
     }
 
     create(){
-        this.scene.start('main-menu-scene');
+        this.scene.start('parkour-scene');
     }
 
     update(){
