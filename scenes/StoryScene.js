@@ -28,7 +28,7 @@ Can you stop the darkness before it consumes everything?`;
     }
 
     preload(){
-        this.load.audio('narrator','../Audios/narrator.mp3');
+        this.load.audio('narrator','../public/Audios/narrator.mp3');
     }
 
     create(){

@@ -18,10 +18,10 @@ class EscapeArrows extends Phaser.Scene{
     }
 
     preload(){
-        this.load.image('arrows-bg','../images/arrows-bg.png');
-        this.load.image('arrow','../images/arrow.png');
+        this.load.image('arrows-bg','../public/images/arrows-bg.png');
+        this.load.image('arrow','../public/images/arrow.png');
 
-        this.load.audio('arrow-shoot','../Audios/arrow-shoot.wav');
+        this.load.audio('arrow-shoot','../public/Audios/arrow-shoot.wav');
     }
 
     create(){
