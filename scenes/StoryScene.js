@@ -137,7 +137,7 @@ Can you stop the darkness before it consumes everything?`;
         let startStory = false;
         this.time.delayedCall(2000, () => {
             startStory = true;
-            this.narrator.play();
+            if(this.narrator) this.narrator.play();
         });
 
         const timer = this.time.addEvent({

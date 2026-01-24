@@ -121,7 +121,7 @@ class EscapeArrows extends Phaser.Scene{
                 y: this.scale.height + Helper.scaleHeight(100, this.h),
                 repeat: -1,
                 onRepeat: () => {
-                    this.arrowSound.play();
+                    if(this.arrowSound) this.arrowSound.play();
                 }
             });
             this.physics.add.overlap(arrow, this.player, this.killPlayer, null, this);

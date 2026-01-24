@@ -186,10 +186,10 @@ moment as you have no weapon.
                 this.knight.x = Helper.scaleWidth(900, this.w);
                 this.knight.y = Helper.scaleHeight(285, this.h);
                 this.alert.setAlpha(1);
-                this.alertSound.play();
+                if(this.alertSound) this.alertSound.play();
 
                 this.sleepTimer = this.time.delayedCall(3000, () => {
-                    this.alertSound.stop();
+                    if(this.alertSound) this.alertSound.stop();
                     this.knightSleeping = true;
                     this.timerNotRegistered = true;
                     this.knight.setTexture('knight-sleeping');
@@ -218,7 +218,7 @@ moment as you have no weapon.
         if(this.knightAttackPlayer){
             this.input.keyboard.enabled = false;
             this.alert.setAlpha(0);
-            this.alertSound.stop();
+            if(this.alertSound) this.alertSound.stop();
 
             this.tweens.add({
                 targets: this.knight,
