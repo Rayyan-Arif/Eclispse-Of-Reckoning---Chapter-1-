@@ -130,7 +130,7 @@ class Battle extends Phaser.Scene{
             this.sound.play('button-click');
 
             this.input.setDefaultCursor('default');
-            this.time.delayedCall(0, () => {this.fightStarted = true});
+            this.fightStarted = true;
 
             this.startFight();
 
