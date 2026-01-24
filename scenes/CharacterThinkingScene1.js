@@ -24,7 +24,7 @@ class CharacterThinking1 extends Phaser.Scene{
     }
 
     preload(){
-        this.load.image("thinking-bg-1","../images/character-thinking-1.png");
+
     }
 
     create(){

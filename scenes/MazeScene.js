@@ -49,9 +49,7 @@ class Maze extends Phaser.Scene{
     }
 
     preload(){
-        this.load.image('gun','../images/gun.png');
 
-        this.load.audio('success','../Audios/success.wav');
     }
 
     create(){
