@@ -1,5 +1,5 @@
 import './style.css'
-import Phaser, { Scene } from 'phaser';
+import Phaser from 'phaser';
 import MainMenu from '../scenes/MainMenuScene';
 import Credits from '../scenes/CreditsScene';
 import Story from '../scenes/StoryScene';
@@ -22,8 +22,7 @@ const config = {
       debug: false,
     }
   },
-  // scene: [MainMenu, Credits, Story, CharacterThinking1, Parkour, EscapeArrows, EscapeKnight, Maze, Battle, CharacterThinking2, Ending]
-  scene: [Battle]
+  scene: [MainMenu, Credits, Story, CharacterThinking1, Parkour, EscapeArrows, EscapeKnight, Maze, Battle, CharacterThinking2, Ending]
 }
 
 const game = new Phaser.Game(config);

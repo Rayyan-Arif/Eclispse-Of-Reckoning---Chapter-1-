@@ -9,11 +9,12 @@ class EscapeArrows extends Phaser.Scene{
         this.background;
         this.player;
         this.cannons = [];
-        this.playerSpeed = 300;
+        this.playerSpeed;
         this.arrows = [];
         this.hint;
         this.exitbutton;
         this.arrowSound;
+        this.emitter;
     }
 
     preload(){
@@ -26,6 +27,19 @@ class EscapeArrows extends Phaser.Scene{
     create(){
         this.w = this.scale.width;
         this.h = this.scale.height;
+
+        this.playerSpeed = Helper.scaleWidth(300, this.w);
+
+        this.emitter = this.add.particles(0, 0, 'particle', {
+            speed: { min: -200, max: 200 },
+            angle: { min: 0, max: 360 },
+            lifespan: 1000,
+            scale: { start: 1, end: 0 },
+            quantity: 4,
+            blendMode: 'MULTIPLY',
+            tint: [0xff6600, 0xff3300, 0xcc0000],
+            emitting: false
+        }).setDepth(3);
 
         this.arrowSound = this.sound.add('arrow-shoot');
   
@@ -122,17 +136,19 @@ class EscapeArrows extends Phaser.Scene{
         const {left, right} = this.cursors;
         if(left.isDown){
             this.player.setTexture('player-left');
-            this.player.setVelocityX(Helper.scaleWidth(-this.playerSpeed, this.w));
+            this.player.setVelocityX(-this.playerSpeed);
         } 
         if(right.isDown){
             this.player.setTexture('player-right');
-            this.player.setVelocityX(Helper.scaleWidth(this.playerSpeed, this.w));
+            this.player.setVelocityX(this.playerSpeed);
         }
         
         this.exitScene();
     }
 
     killPlayer(){
+        this.emitter.explode(40, this.player.x, this.player.y);
+
         this.player.x = this.w / 15;
         this.player.y = this.h / 1.11;
 

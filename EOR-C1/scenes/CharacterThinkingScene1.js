@@ -41,11 +41,11 @@ class CharacterThinking1 extends Phaser.Scene{
         });
 
         this.dialogue = this.add.text(Helper.scaleWidth(760, this.w),Helper.scaleHeight(330, this.h),'',{
-            fontSize: `${Helper.scaleWidth(30, w)}px`,
+            fontSize: `${Helper.scaleWidth(30, this.w)}px`,
             fontFamily: 'Arial',
             color: 'black',
             align: 'center',
-            lineSpacing: Helper.scaleWidth(30, w)
+            lineSpacing: Helper.scaleWidth(30, this.w)
         }).setOrigin(0.5);
 
         this.time.delayedCall(2000,() => {

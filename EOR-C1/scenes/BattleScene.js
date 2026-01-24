@@ -15,12 +15,13 @@ class Battle extends Phaser.Scene{
         this.healthbar;
         this.timer;
         this.player;
-        this.playerSpeed = 300;
+        this.playerSpeed;
         this.enemies = [];
         this.newTextureEnemy = [];
         this.bullet;
         this.timerCount;
         this.showReloading;
+        this.emitter;
     }
 
     init(){
@@ -48,6 +49,19 @@ class Battle extends Phaser.Scene{
     create(){
         this.w = this.scale.width;
         this.h = this.scale.height;
+
+        this.playerSpeed = Helper.scaleWidth(300, this.w);
+
+        this.emitter = this.add.particles(0, 0, 'particle', {
+            speed: { min: -200, max: 200 },
+            angle: { min: 0, max: 360 },
+            lifespan: 1000,
+            scale: { start: 1, end: 0 },
+            quantity: 4,
+            blendMode: 'MULTIPLY',
+            tint: [0xff6600, 0xff3300, 0xcc0000],
+            emitting: false
+        }).setDepth(3);
 
         this.background = this.add.image(0,0,'battlefield').setOrigin(0,0).setAlpha(0);
         this.background.setDisplaySize(this.w, this.h);
@@ -226,20 +240,20 @@ class Battle extends Phaser.Scene{
                     this.player.body.setOffset(this.player.body.offset.x + Helper.scaleWidth(230, this.w), this.player.body.offset.y);
                     this.player.setTexture('player-fight-left');
                 }
-                this.player.setVelocityX(Helper.scaleWidth(-this.playerSpeed/1.5, this.w));
+                this.player.setVelocityX(-this.playerSpeed/1.5);
             }
             if(right.isDown){
                 if(this.player.texture.key !== 'player-fight-right'){
                     this.player.body.setOffset(this.player.body.offset.x - Helper.scaleWidth(230, this.w), this.player.body.offset.y);
                     this.player.setTexture('player-fight-right');
                 }
-                this.player.setVelocityX(Helper.scaleWidth(this.playerSpeed/1.5, this.w));
+                this.player.setVelocityX(this.playerSpeed/1.5);
             }
             if(up.isDown){
-                this.player.setVelocityY(Helper.scaleHeight(-this.playerSpeed, this.h));
+                this.player.setVelocityY(-this.playerSpeed);
             }
             if(down.isDown){
-                this.player.setVelocityY(Helper.scaleHeight(this.playerSpeed, this.h));
+                this.player.setVelocityY(this.playerSpeed);
             }
         }
 
@@ -251,6 +265,7 @@ class Battle extends Phaser.Scene{
         if(this.isReloading){
             for(let i=0 ; i<5 ; i++){
                 if(this.physics.world.overlap(this.enemies[i], this.bullet)){
+                    this.emitter.explode(40, this.enemies[i].x, this.enemies[i].y);
                     this.generatePositionEnemy(this.enemies[i]);
                 }
             }

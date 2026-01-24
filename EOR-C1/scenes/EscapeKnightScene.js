@@ -18,6 +18,7 @@ class EscapeKnight extends Phaser.Scene{
         this.diedText;
         this.alert;
         this.alertSound;
+        this.emitter;
     }
 
     init(){
@@ -37,6 +38,17 @@ class EscapeKnight extends Phaser.Scene{
     create(){
         this.w = this.scale.width;
         this.h = this.scale.height;
+
+        this.emitter = this.add.particles(0, 0, 'particle', {
+            speed: { min: -200, max: 200 },
+            angle: { min: 0, max: 360 },
+            lifespan: 1000,
+            scale: { start: 1, end: 0 },
+            quantity: 4,
+            blendMode: 'MULTIPLY',
+            tint: [0xff6600, 0xff3300, 0xcc0000],
+            emitting: false
+        }).setDepth(3);
 
         this.playerSpeed = Helper.scaleWidth(200, this.w);
 
@@ -146,10 +158,10 @@ moment as you have no weapon.
         const {left, right} = this.cursors;
         if(left.isDown && !this.knightAttackPlayer){
             this.player.setTexture('player-left');
-            this.player.setVelocityX(Helper.scaleWidth(-this.playerSpeed, this.w));
+            this.player.setVelocityX(-this.playerSpeed);
         } else if(right.isDown && !this.knightAttackPlayer){
             this.player.setTexture('player-right');
-            this.player.setVelocityX(Helper.scaleWidth(this.playerSpeed, this.w));
+            this.player.setVelocityX(this.playerSpeed);
         }
 
         this.wakeUpKnight();
@@ -224,6 +236,8 @@ moment as you have no weapon.
                     });
 
                     this.sound.play('death');
+
+                    this.emitter.explode(40, this.player.x, this.player.y);
 
                     this.tweens.add({
                         targets: this.player,

@@ -13,10 +13,11 @@ class Parkour extends Phaser.Scene{
         this.slab2;
         this.slab3;
         this.player;
-        this.playerSpeed = 200;
+        this.playerSpeed;
         this.slabButton;
         this.slabButtonBg;
         this.hint;
+        this.emitter;
     }
 
     init(){
@@ -39,6 +40,19 @@ class Parkour extends Phaser.Scene{
     create(){
         this.w = this.scale.width;
         this.h = this.scale.height;
+
+        this.playerSpeed = Helper.scaleWidth(200, this.w);
+
+        this.emitter = this.add.particles(0, 0, 'particle', {
+            speed: { min: -200, max: 200 },
+            angle: { min: 0, max: 360 },
+            lifespan: 1000,
+            scale: { start: 1, end: 0 },
+            quantity: 4,
+            blendMode: 'MULTIPLY',
+            tint: [0xff6600, 0xff3300, 0xcc0000],
+            emitting: false
+        }).setDepth(3);
 
         this.parkour = this.add.image(0,0,'parkour').setOrigin(0,0);
         this.parkour.setDisplaySize(this.scale.width, this.scale.height);
@@ -140,14 +154,14 @@ class Parkour extends Phaser.Scene{
         }).setOrigin(0.5);
     }
 
-    update(){
+    update(){ 
         if(this.checkIfInLava()){
             this.player.x = Helper.scaleWidth(70, this.w);
             this.player.y = Helper.scaleHeight(560, this.h);
         }
 
         if(!this.checkIfInAir()){
-            this.player.setVelocityY(Helper.scaleHeight(this.playerSpeed*3, this.h))
+            this.player.setVelocityY(this.playerSpeed*3)
         } else{
             this.player.setVelocityY(0);
         }
@@ -157,11 +171,11 @@ class Parkour extends Phaser.Scene{
         const {left,right,up} = this.cursors;
         if(left.isDown){
             this.player.setTexture('player-left');
-            this.player.setVelocityX(Helper.scaleWidth(-this.playerSpeed*1.5, this.w));
+            this.player.setVelocityX(-this.playerSpeed*1.5);
         }
         if(right.isDown){
             this.player.setTexture('player-right');
-            this.player.setVelocityX(Helper.scaleWidth(this.playerSpeed*1.5, this.w));
+            this.player.setVelocityX(this.playerSpeed*1.5);
         }
         if(Phaser.Input.Keyboard.JustDown(up) && this.checkIfInAir()){
             this.sound.play('jump');
@@ -184,8 +198,8 @@ class Parkour extends Phaser.Scene{
     checkIfInAir(){
         if (
             ((this.player.x < Helper.scaleWidth(5, this.w)) || 
-            (this.player.x >= Helper.scaleWidth(5, this.w) && this.player.x < Helper.scaleWidth(153, this.w))) &&
-            this.player.y >= Helper.scaleHeight(555, this.h) && this.player.y <= Helper.scaleHeight(570, this.h)
+            (this.player.x >= Helper.scaleWidth(5, this.w) && this.player.x < Helper.scaleWidth(150, this.w))) &&
+            this.player.y >= Helper.scaleHeight(560, this.h) && this.player.y <= Helper.scaleHeight(565, this.h)
         ) return true;
 
         else if (
@@ -214,8 +228,10 @@ class Parkour extends Phaser.Scene{
     }
 
     checkIfInLava(){
-        if(this.player.x >= Helper.scaleWidth(153, this.w) && this.player.x < Helper.scaleWidth(875, this.w) && this.player.y >= Helper.scaleHeight(620, this.h)){
+        if(this.player.x >= Helper.scaleWidth(150, this.w) && this.player.x < Helper.scaleWidth(875, this.w) && this.player.y >= Helper.scaleHeight(620, this.h)){
             this.sound.play('death');
+
+            this.emitter.explode(40, this.player.x, this.player.y);
             
             if(!this.isDiedOnce){
                 this.hint.setText('I guess you should press it!');
