@@ -33,12 +33,12 @@ class Battle extends Phaser.Scene{
     }
 
     preload(){
-        this.load.image('battlefield','../UI Images/battlefield.png');
-        this.load.image('player-fight-left','../UI Images/player-fight-left.png');
-        this.load.image('player-fight-right','../UI Images/player-fight-right.png');
-        this.load.image('enemy-left','../UI Images/battlefield-enemy-left.png');
-        this.load.image('enemy-right','../UI Images/battlefield-enemy-right.png');
-        this.load.image('bullet','../UI Images/bullet.png');
+        this.load.image('battlefield','../images/battlefield.png');
+        this.load.image('player-fight-left','../images/player-fight-left.png');
+        this.load.image('player-fight-right','../images/player-fight-right.png');
+        this.load.image('enemy-left','../images/battlefield-enemy-left.png');
+        this.load.image('enemy-right','../images/battlefield-enemy-right.png');
+        this.load.image('bullet','../images/bullet.png');
 
         this.load.audio('button-click','../Audios/button-click.wav');
         this.load.audio('shoot','../Audios/shoot.wav');

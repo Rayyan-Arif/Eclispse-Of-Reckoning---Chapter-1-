@@ -23,14 +23,14 @@ class CharacterThinking2 extends Phaser.Scene{
     }
 
     preload(){
-        this.load.image("thinking-bg","../UI Images/character-thinking-2.png");
+        this.load.image("thinking-bg-2","../images/character-thinking-2.png");
     }
 
     create(){
         this.w = this.scale.width;
         this.h = this.scale.height;
 
-        this.background = this.add.image(0,0,'thinking-bg').setOrigin(0,0).setAlpha(0);
+        this.background = this.add.image(0,0,'thinking-bg-2').setOrigin(0,0).setAlpha(0);
         this.background.setDisplaySize(this.w, this.h);
 
         this.tweens.add({

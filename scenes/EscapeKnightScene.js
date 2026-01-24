@@ -28,9 +28,9 @@ class EscapeKnight extends Phaser.Scene{
     }
 
     preload(){
-        this.load.image('wall','../UI Images/wall.png');
-        this.load.image('knight-alert','../UI Images/guard-alert.png');
-        this.load.image('knight-sleeping','../UI Images/guard-sleeping.png');
+        this.load.image('wall','../images/wall.png');
+        this.load.image('knight-alert','../images/guard-alert.png');
+        this.load.image('knight-sleeping','../images/guard-sleeping.png');
 
         this.load.audio('alert','../Audios/alert.wav');
     }

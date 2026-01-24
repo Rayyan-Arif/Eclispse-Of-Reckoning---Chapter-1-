@@ -25,12 +25,12 @@ class MainMenu extends Phaser.Scene{
     }
 
     preload(){
-        this.load.image("background","../UI Images/background.png");
-        this.load.image("player","../UI Images/angrypose.png");
-        this.load.image("enemy","../UI Images/angryenemy.png");
-        this.load.image("knight","../UI Images/guard-alert.png");
-        this.load.image('particle', '../UI Images/particle.png');
-        this.load.image('decoration','../UI Images/decoration.png');
+        this.load.image("background","../images/background.png");
+        this.load.image("player","../images/angrypose.png");
+        this.load.image("enemy","../images/angryenemy.png");
+        this.load.image("knight","../images/guard-alert.png");
+        this.load.image('particle', '../images/particle.png');
+        this.load.image('decoration','../images/decoration.png');
         
         this.load.audio('button-click','../Audios/button-click.wav');
         this.load.audio('theme', '../Audios/theme.mp3');
