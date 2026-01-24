@@ -28,13 +28,13 @@ class Parkour extends Phaser.Scene{
     }
     
     preload(){
-        this.load.image('parkour','../public/images/parkour.png');
-        this.load.image('player-left','../public/images/main-character-left.png');
-        this.load.image('player-right','../public/images/main-character-right.png');
+        this.load.image('parkour','../images/parkour.png');
+        this.load.image('player-left','../images/main-character-left.png');
+        this.load.image('player-right','../images/main-character-right.png');
 
-        this.load.audio('jump','../public/Audios/jump.wav');
-        this.load.audio('enable-parkour-button','../public/Audios/enable-parkour-button.wav');
-        this.load.audio('death','../public/Audios/death.wav');
+        this.load.audio('jump','../Audios/jump.wav');
+        this.load.audio('enable-parkour-button','../Audios/enable-parkour-button.wav');
+        this.load.audio('death','../Audios/death.wav');
     }
     
     create(){
