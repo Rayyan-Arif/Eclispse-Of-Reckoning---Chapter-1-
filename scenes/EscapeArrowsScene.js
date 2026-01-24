@@ -92,6 +92,8 @@ class EscapeArrows extends Phaser.Scene{
             this.exitbutton.disableInteractive();
             this.sound.play('button-click');
 
+            this.arrowSound.stop();
+
             const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
             this.tweens.add({
                 targets: fade,
