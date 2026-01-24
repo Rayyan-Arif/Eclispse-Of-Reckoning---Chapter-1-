@@ -90,6 +90,8 @@ class EscapeArrows extends Phaser.Scene{
             this.sound.play('button-click');
 
             this.arrowSound.stop();
+            this.arrowSound.destroy();
+            this.arrowSound = null;
 
             const fade = this.add.rectangle(0,0,this.scale.width,this.scale.height,0x000000).setOrigin(0,0).setAlpha(0);
             this.tweens.add({
@@ -163,6 +165,8 @@ class EscapeArrows extends Phaser.Scene{
                 duration: 100,
                 onComplete: () => {
                     this.scene.stop();
+                    this.arrowSound.destroy();
+                    this.arrowSound = null;
                     this.scene.start("escape-knight-scene");
                 }
             })
