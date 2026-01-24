@@ -1,8 +1,11 @@
 import Phaser from "phaser";
+import Helper from "../HelperClass";
 
 class Story extends Phaser.Scene{
     constructor(){
         super("story-narration-scene");
+        this.w;
+        this.h;
         this.storyText = 
 `15th Nov, 2026. The day the world fell.
 Humanity’s last taste of peace ended in a single, fiery crash.
@@ -32,16 +35,18 @@ Can you stop the darkness before it consumes everything?`;
     }
 
     create(){
-        console.log(this.counter);
+        this.w = this.scale.width;
+        this.h = this.scale.height;
+
         this.narrator = this.sound.add('narrator');
 
-        this.exitbutton = this.add.text(95,40,'EXIT',{
-            fontSize: '32px',
+        this.exitbutton = this.add.text(Helper.scaleWidth(95, this.w),Helper.scaleHeight(40, this.h),'EXIT',{
+            fontSize: `${Helper.scaleWidth(32, this.w)}px`,
             fontFamily: 'Segoe UI',
             fontStyle: 'bold',
             backgroundColor: '#0E2A2A',
             color: '#20D38B',       
-            padding: { left: 50, right: 50, top: 10, bottom: 10 },
+            padding: { left: Helper.scaleWidth(50, this.w), right: Helper.scaleWidth(50, this.w), top: Helper.scaleHeight(10, this.h), bottom: Helper.scaleHeight(10, this.h) },
             shadow: {
                 offsetX: 0,
                 offsetY: 0,
@@ -72,12 +77,12 @@ Can you stop the darkness before it consumes everything?`;
         .on('pointerup',() => this.exitbutton.setScale(1));
 
         this.skipbutton = this.add.text(this.scale.width/1.105,this.scale.height/1.06,'SKIP',{
-            fontSize: '32px',
+            fontSize: `${Helper.scaleWidth(32, this.w)}px`,
             fontFamily: 'Segoe UI',
             fontStyle: 'bold',
             backgroundColor: '#0E2A2A',
             color: '#20D38B',       
-            padding: { left: 50, right: 50, top: 10, bottom: 10 },
+            padding: { left: Helper.scaleWidth(50, this.w), right: Helper.scaleWidth(50, this.w), top: Helper.scaleHeight(10, this.h), bottom: Helper.scaleHeight(10, this.h) },
             shadow: {
                 offsetX: 0,
                 offsetY: 0,
@@ -117,11 +122,11 @@ Can you stop the darkness before it consumes everything?`;
             });
         });
 
-        this.story = this.add.text(30,100,'',{
+        this.story = this.add.text(Helper.scaleWidth(30, this.w),Helper.scaleHeight(100, this.h),'',{
             fontFamily: 'Georgia, Arial',
-            fontSize: '25px',
+            fontSize: `${Helper.scaleWidth(25, this.w)}px`,
             lineSpacing: 20,
-            wordWrap: { width: 1000 }
+            wordWrap: { width: Helper.scaleWidth(1000, this.w) }
         });
 
         let startStory = false;

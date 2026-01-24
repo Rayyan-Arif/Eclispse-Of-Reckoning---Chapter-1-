@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import Helper from "../../HelperClass";
+import Helper from "../HelperClass";
 
 class CharacterThinking1 extends Phaser.Scene{
     constructor(){
