@@ -14,7 +14,7 @@ import CharacterThinking2 from '../scenes/CharacterThinkingScene2';
 import Loading from '../scenes/LoadingScene';
 
 const config = {
-  type: Phaser.AUTO,
+  type: Phaser.CANVAS,
   canvas: gameCanvas,
   pixelArt: true,
   physics: {
