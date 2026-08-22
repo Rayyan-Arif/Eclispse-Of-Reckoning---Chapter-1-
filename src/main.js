@@ -14,7 +14,7 @@ import CharacterThinking2 from '../scenes/CharacterThinkingScene2';
 import Loading from '../scenes/LoadingScene';
 
 const config = {
-  type: Phaser.WEBGL,
+  type: Phaser.AUTO,
   canvas: gameCanvas,
   pixelArt: true,
   physics: {
